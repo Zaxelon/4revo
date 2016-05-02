@@ -49,6 +49,10 @@ end;
 
 procedure TAuthForm.Button1Click(Sender: TObject);
 begin
+MainUserForm.Npravka.Visible:=false;
+MainUserForm.Nsee.Visible:=false;
+MainUserForm.Nstar_sekt.Visible:=false;
+MainUserForm.Nstar_admin.Visible:=false;
 Label3.Caption:='';
   if Edit1.Text='' then Label3.Caption:='¬ведите логин.' else
   if Edit2.Text='' then Label3.Caption:='¬ведите пароль.' else
@@ -58,8 +62,6 @@ Label3.Caption:='';
     ';Initial Catalog=priemka;Data Source='+combobox1.Items[combobox1.ItemIndex];;
     try
       CoNSQL.adoconnection1.Connected:=true;
-      //CoNSQL.adotable1.Active:=true;
-      //CoNSQL.datasource1.Enabled:=true;
     except
     begin
       Label3.Caption:='ќшибка авторизации.';

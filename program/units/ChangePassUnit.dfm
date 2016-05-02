@@ -3,7 +3,7 @@ object ChangePassForm: TChangePassForm
   Top = 786
   Width = 324
   Height = 183
-  Caption = #1055#1072#1088#1086#1083#1100
+  Caption = #1057#1084#1077#1085#1072' '#1087#1072#1088#1086#1083#1103
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

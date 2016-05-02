@@ -1,6 +1,6 @@
 object ProhForm: TProhForm
-  Left = 1224
-  Top = 318
+  Left = 446
+  Top = 196
   Width = 375
   Height = 205
   Caption = #1055#1088#1086#1093#1086#1076#1085#1086#1081' '#1073#1072#1083#1083

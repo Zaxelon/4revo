@@ -100,7 +100,7 @@ FOREIGN KEY (id_statement) REFERENCES abiture(id_statement)  ON DELETE CASCADE O
 GO
 CREATE TABLE specialty (
 id_spec int IDENTITY(1,1),
-name_spec varchar(60) NOT NULL,
+name_spec varchar(100) NOT NULL,
 code_spec varchar(20) NOT NULL,
 CHECK (LEN(code_spec)>2),
 places int,
@@ -136,8 +136,8 @@ FOREIGN KEY (id_statement) REFERENCES abiture(id_statement) ON DELETE CASCADE ON
 );
 GO
 CREATE TABLE oge (
-id_statement int NOT NULL,
-numb_sv int NOT NULL,
+id_statement INT NOT NULL,
+numb_sv INT NOT NULL,
 CHECK (numb_sv>0),
 avg_oge decimal(3,2) NOT NULL,
 CHECK ((avg_oge>=2) and (avg_oge<=5)),
@@ -148,9 +148,11 @@ FOREIGN KEY (id_statement) REFERENCES abiture(id_statement) ON DELETE CASCADE ON
 );
 GO
 CREATE TABLE abit_prow(
-ID_rec INT IDENTITY(1,1),
-id_spec INT NOT NULL,
-count_z INT NOT NULL
+ID INT IDENTITY(1,1),
+name_spec varchar(50),
+places INT,
+prowed INT,
+ne_prowed INT
 );
 
 GO
@@ -460,20 +462,6 @@ CLOSE zlp
 DEALLOCATE zlp	
 END
 
-if @name_spec <> ''
-IF NOT EXISTS(SELECT * FROM abit_prow 
-INNER JOIN specialty ON abit_prow.id_spec = specialty.id_spec
-WHERE ( @name_spec = specialty.name_spec ))
-BEGIN
-	INSERT INTO abit_prow(id_spec,count_z) VALUES
-	((SELECT id_spec FROM specialty WHERE @name_spec = name_spec),(SELECT COUNT(*) FROM @zpr1))
-END ELSE
-BEGIN
-	UPDATE abit_prow 
-	SET count_z = (SELECT COUNT(*) FROM @zpr1)
-	WHERE @name_spec = (SELECT name_spec FROM specialty WHERE (id_spec = abit_prow.id_spec))
-END
-
 SELECT ID as [id_statement],sr_nm as surname,fr_nm as first_name,md_nm as middle_name,avgn FROM @zpr1
 END
 
@@ -762,23 +750,224 @@ ORDER BY dbo.atestat.avgn DESC
 END
 END
 GO
-CREATE PROCEDURE sel_count_prow
+CREATE PROCEDURE [dbo].[gen_count_prow]
+@name_spec varchar(50),
+@prior int,
+@count int
 AS
 BEGIN
-SELECT (SELECT name_spec FROM specialty WHERE abit_prow.id_spec = id_spec) AS [Специальность],count_z AS [Количество] FROM abit_prow
+DECLARE @not_avg decimal(4,2)
+DECLARE @id_s INT
+DECLARE @sr_nm varchar(50)
+DECLARE @fr_nm varchar(50)
+DECLARE @md_nm varchar(50)
+DECLARE @avgn decimal(4,2)
+DECLARE @docnb varchar(20)
+DECLARE @zpr table
+(
+ID int,
+sr_nm varchar(50),
+fr_nm varchar(50),
+md_nm varchar(50),
+avgn decimal(4,2)
+)
+if @prior <> 0
+Begin
+DECLARE zlp SCROLL CURSOR FOR
+SELECT dbo.abiture.id_statement, dbo.abiture.surname, dbo.abiture.first_name, dbo.abiture.middle_name, dbo.atestat.avgn, benefits.document_number
+FROM dbo.abiture INNER JOIN dbo.priem ON dbo.abiture.id_statement = dbo.priem.id_statement 
+INNER JOIN dbo.specialty ON dbo.priem.id_spec = dbo.specialty.id_spec 
+INNER JOIN dbo.atestat ON dbo.abiture.id_statement = dbo.atestat.id_statement
+FULL JOIN dbo.benefits ON dbo.benefits.id_statement = dbo.abiture.id_statement
+WHERE (dbo.specialty.name_spec = @name_spec and dbo.priem.priority = @prior)
+ORDER BY dbo.atestat.avgn DESC
+end
+else
+begin
+DECLARE zlp SCROLL CURSOR FOR
+SELECT dbo.abiture.id_statement, dbo.abiture.surname, dbo.abiture.first_name, dbo.abiture.middle_name, dbo.atestat.avgn, benefits.document_number
+FROM dbo.abiture INNER JOIN dbo.priem ON dbo.abiture.id_statement = dbo.priem.id_statement 
+INNER JOIN dbo.specialty ON dbo.priem.id_spec = dbo.specialty.id_spec 
+INNER JOIN dbo.atestat ON dbo.abiture.id_statement = dbo.atestat.id_statement
+FULL JOIN dbo.benefits ON dbo.benefits.id_statement = dbo.abiture.id_statement
+WHERE (dbo.specialty.name_spec = @name_spec)
+ORDER BY dbo.atestat.avgn DESC
+end
+OPEN zlp
+FETCH FIRST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn, @docnb
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	DECLARE @iluwka decimal(4,2)
+	if @docnb is not null
+	SET @iluwka = @avgn + 10.00 else
+	SET @iluwka = @avgn
+	INSERT INTO @zpr (ID,sr_nm,fr_nm,md_nm,avgn)
+	VALUES (@id_s, @sr_nm, @fr_nm, @md_nm, @iluwka)
+	FETCH NEXT FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn, @docnb
 END
-GO
-CREATE PROCEDURE drop_abit_prow
-AS
+CLOSE zlp
+DEALLOCATE zlp
+DECLARE @zpr1 table
+(
+ID int,
+sr_nm varchar(50),
+fr_nm varchar(50),
+md_nm varchar(50),
+avgn decimal(4,2)
+)
+DECLARE @zapas table
+(
+ID int,
+sr_nm varchar(50),
+fr_nm varchar(50),
+md_nm varchar(50),
+avgn decimal(4,2)
+)
+DECLARE @cntzt INT
+if @prior <> 0
+Begin
+SET @cntzt = (SELECT TOP(@count+1) COUNT(*) AS CNTZ FROM @zpr)
+DECLARE zlp SCROLL CURSOR FOR
+SELECT TOP(@count+1) ID, sr_nm, fr_nm, md_nm, avgn 
+FROM @zpr
+ORDER BY avgn DESC
+end
+else
+begin
+SET @cntzt = (SELECT TOP(@count+1) COUNT(*) AS CNTZ FROM @zpr)
+DECLARE zlp SCROLL CURSOR FOR
+SELECT TOP(@count+1) ID, sr_nm, fr_nm, md_nm, avgn 
+FROM @zpr
+ORDER BY avgn DESC
+end
+OPEN zlp
+FETCH LAST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
+if @cntzt>@count SET @not_avg = @avgn else SET @not_avg = 0
+FETCH FIRST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
+
+WHILE @@FETCH_STATUS = 0
 BEGIN
-	DELETE FROM abit_prow
+	if not(@avgn = @not_avg)
+	Begin
+		DECLARE @bubl decimal(4,2)
+		if @avgn>10 SET @bubl = @avgn - 10.00
+		else SET @bubl = @avgn
+		INSERT INTO @zpr1 (ID,sr_nm,fr_nm,md_nm,avgn)
+		VALUES (@id_s, @sr_nm, @fr_nm, @md_nm, @bubl)
+	end else
+	Begin
+		DECLARE @pub decimal(4,2)
+		if @avgn>10 SET @pub = @avgn - 10.00
+		else SET @pub = @avgn
+		--SELECT @id_s, @sr_nm, @fr_nm, @md_nm, @pub
+		INSERT INTO @zapas(ID,sr_nm,fr_nm,md_nm,avgn)
+		VALUES (@id_s, @sr_nm, @fr_nm, @md_nm, @pub)	
+	end
+	FETCH NEXT FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
 END
+CLOSE zlp
+DEALLOCATE zlp
+--SELECT @count AS VHCOLV,COUNT(*) FROM @zpr1 AS BANDJ
+DECLARE @real_count INT
+SET @real_count = (SELECT COUNT(*) FROM @zpr1)  
+IF @count > @real_count
+Begin
+	DECLARE zlp SCROLL CURSOR FOR
+	SELECT ID, sr_nm, fr_nm, md_nm, avgn
+	FROM @zapas as [zp]
+	ORDER BY (SELECT bb.avg_oge FROM oge as[bb] WHERE (bb.id_statement = zp.ID)) DESC
+	OPEN zlp
+	DECLARE @old_s INT 
+	SET @old_s = 0
+	FETCH FIRST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
+	
+	WHILE @@FETCH_STATUS = 0 and @count > @real_count
+	BEGIN
+		DECLARE @zip bit
+		SET @zip =(SELECT training_courses FROM dbo.abiture
+		WHERE (id_statement = @id_s))
+		if @old_s <> @avgn 
+		BEGIN
+			SET @real_count = @real_count + 1
+			INSERT INTO @zpr1 (ID,sr_nm,fr_nm,md_nm,avgn)
+			VALUES (@id_s, @sr_nm, @fr_nm, @md_nm, @avgn)  			
+		END else
+		BEGIN
+		if @zip = 1
+			Begin
+				SET @real_count = @real_count + 1
+				INSERT INTO @zpr1 (ID,sr_nm,fr_nm,md_nm,avgn)
+				VALUES (@id_s, @sr_nm, @fr_nm, @md_nm, @avgn)  
+			end
+		END
+		SET @old_s = @avgn
+		FETCH NEXT FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
+	END
+	
+	FETCH FIRST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
+	
+	WHILE @@FETCH_STATUS = 0 and @count > @real_count
+	BEGIN
+		SET @zip =(SELECT training_courses FROM dbo.abiture
+		WHERE (id_statement = @id_s))
+		if @old_s = @avgn 
+		BEGIN
+		if @zip = 0
+			Begin
+				SET @real_count = @real_count + 1
+				INSERT INTO @zpr1 (ID,sr_nm,fr_nm,md_nm,avgn)
+				VALUES (@id_s, @sr_nm, @fr_nm, @md_nm, @avgn)  
+			end
+		END
+		SET @old_s = @avgn
+		FETCH NEXT FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
+	END
+CLOSE zlp
+DEALLOCATE zlp	
+END
+
+DECLARE @pzkwd bit
+if @prior = 1 SET @pzkwd = 1 else SET @pzkwd = 0
+
+DECLARE @bgl INT
+if @count<=(SELECT COUNT(*)
+FROM dbo.specialty 
+INNER JOIN dbo.priem ON dbo.specialty.id_spec = dbo.priem.id_spec 
+INNER JOIN dbo.abiture ON dbo.priem.id_statement = dbo.abiture.id_statement
+WHERE (dbo.specialty.name_spec = @name_spec and ((@pzkwd = 0)
+or (@pzkwd = 1 and not(dbo.priem.priority in (2,3))))))
+SET @bgl = (SELECT COUNT(*)
+FROM dbo.specialty 
+INNER JOIN dbo.priem ON dbo.specialty.id_spec = dbo.priem.id_spec 
+INNER JOIN dbo.abiture ON dbo.priem.id_statement = dbo.abiture.id_statement
+WHERE (dbo.specialty.name_spec = @name_spec and ((@pzkwd = 0)
+or (@pzkwd = 1 and not(dbo.priem.priority in (2,3)))))) - @count else SET @bgl = 0
+
+INSERT INTO abit_prow (name_spec, places, prowed, ne_prowed) 
+VALUES (@name_spec, @count, (SELECT COUNT(*) FROM @zpr1),@bgl) 
+END
+
 GO
-CREATE PROCEDURE sel_count_benf
+CREATE PROCEDURE [dbo].[gen_all_prow]
+@prior int
 AS
 BEGIN
-	SELECT COUNT(*) FROM abiture
-	INNER JOIN benefits ON abiture.id_statement = benefits.id_statement
+DELETE FROM abit_prow
+DECLARE @name_spec varchar(50)
+DECLARE @places INT
+DECLARE zlpz SCROLL CURSOR FOR
+SELECT name_spec,places FROM specialty
+OPEN zlpz
+FETCH FIRST FROM zlpz INTO @name_spec, @places
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	EXEC gen_count_prow @name_spec, @prior, @places 
+	FETCH NEXT FROM zlpz INTO @name_spec, @places
+END
+CLOSE zlpz
+DEALLOCATE zlpz
 END
 GO
 CREATE PROCEDURE [dbo].[see_all_table]
@@ -952,19 +1141,11 @@ GRANT DELETE ON [dbo].[document] TO [Secretar]
 GO
 use [priemka]
 GO
-GRANT EXECUTE ON [dbo].[sel_count_benf] TO [Secretar]
-GO
-use [priemka]
-GO
 GRANT EXECUTE ON [dbo].[add_doc] TO [Secretar]
 GO
 use [priemka]
 GO
 GRANT EXECUTE ON [dbo].[add_atest] TO [Secretar]
-GO
-use [priemka]
-GO
-GRANT EXECUTE ON [dbo].[drop_abit_prow] TO [Secretar]
 GO
 use [priemka]
 GO
@@ -985,10 +1166,6 @@ GO
 use [priemka]
 GO
 GRANT EXECUTE ON [dbo].[doomsayer] TO [Secretar]
-GO
-use [priemka]
-GO
-GRANT EXECUTE ON [dbo].[sel_count_prow] TO [Secretar]
 GO
 use [priemka]
 GO
@@ -1029,6 +1206,14 @@ GO
 use [priemka]
 GO
 GRANT EXECUTE ON [dbo].[add_pasp_rod] TO [Secretar]
+GO
+use [priemka]
+GO
+GRANT EXECUTE ON [dbo].[gen_count_prow] TO [Secretar]
+GO
+use [priemka]
+GO
+GRANT EXECUTE ON [dbo].[gen_all_prow] TO [Secretar]
 GO
 use [priemka]
 GO

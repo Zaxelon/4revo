@@ -19,9 +19,6 @@ type
     N13: TMenuItem;
     N14: TMenuItem;
     N22: TMenuItem;
-    N23: TMenuItem;
-    N24: TMenuItem;
-    N25: TMenuItem;
     N26: TMenuItem;
     N27: TMenuItem;
     N28: TMenuItem;
@@ -52,9 +49,6 @@ type
     procedure N4Click(Sender: TObject);
     procedure N27Click(Sender: TObject);
     procedure N28Click(Sender: TObject);
-    procedure N16Click(Sender: TObject);
-    procedure N17Click(Sender: TObject);
-    procedure N23Click(Sender: TObject);
     procedure N24Click(Sender: TObject);
     procedure N25Click(Sender: TObject);
     procedure N12Click(Sender: TObject);
@@ -68,6 +62,7 @@ type
     procedure NspecClick(Sender: TObject);
     procedure N40Click(Sender: TObject);
     procedure N41Click(Sender: TObject);
+    procedure N22Click(Sender: TObject);
   private
     see_abit_atest:byte;
   public
@@ -415,36 +410,97 @@ begin
 end;
 
 procedure TMainUserForm.N27Click(Sender: TObject);
+var temp_id:integer;
 begin
-  aborted;
+  temp_id:=CoNSQL.ADOQuery3.FieldByName('ID').AsInteger;
+  CoNSQL.MyRave.SetParam('DTFAM',CoNSQL.ADOQuery3.FieldByName('Фамилия').AsString);
+  CoNSQL.MyRave.SetParam('DTNAM',CoNSQL.ADOQuery3.FieldByName('Имя').AsString);
+  CoNSQL.MyRave.SetParam('DTOT4',CoNSQL.ADOQuery3.FieldByName('Отчество').AsString);
+  CoNSQL.MyRave.SetParam('DTRJD',CoNSQL.ADOQuery3.FieldByName('День рождения').AsString);
+  CoNSQL.MyRave.SetParam('DTADR',CoNSQL.ADOQuery3.FieldByName('Адрес').AsString);
+  CoNSQL.TempQuery.SQL.Text:='SELECT series,numb,date_of_issue FROM pasport WHERE id_statement = :1';
+  CoNSQL.TempQuery.Parameters.ParseSQL(CoNSQL.TempQuery.SQL.Text,true);
+  CoNSQL.TempQuery.Parameters.ParamByName('1').Value:=temp_id;
+  CoNSQL.TempQuery.Open;
+  CoNSQL.MyRave.SetParam('DTSER',CoNSQL.TempQuery.FieldByName('series').AsString);
+  CoNSQL.MyRave.SetParam('DTNUM',CoNSQL.TempQuery.FieldByName('numb').AsString);
+  CoNSQL.MyRave.SetParam('DTDVI',CoNSQL.TempQuery.FieldByName('date_of_issue').AsString);
+  CoNSQL.TempQuery.SQL.Text:='SELECT phone FROM abiture WHERE id_statement = :1';
+  CoNSQL.TempQuery.Parameters.ParseSQL(CoNSQL.TempQuery.SQL.Text,true);
+  CoNSQL.TempQuery.Parameters.ParamByName('1').Value:=temp_id;
+  CoNSQL.TempQuery.Open;
+  CoNSQL.MyRave.SetParam('DTTEL',CoNSQL.TempQuery.FieldByName('phone').AsString);
+  CoNSQL.TempQuery.SQL.Text:='SELECT name_spec,code_spec FROM priem INNER JOIN specialty '+
+  'ON priem.id_spec = specialty.id_spec WHERE id_statement = :1 ORDER BY priority ASC';
+  CoNSQL.TempQuery.Parameters.ParseSQL(CoNSQL.TempQuery.SQL.Text,true);
+  CoNSQL.TempQuery.Parameters.ParamByName('1').Value:=temp_id;
+  CoNSQL.TempQuery.Open;
+  CoNSQL.TempQuery.First;
+  CoNSQL.MyRave.SetParam('DTNS1',CoNSQL.TempQuery.FieldByName('name_spec').AsString);
+  CoNSQL.MyRave.SetParam('DTKS1',CoNSQL.TempQuery.FieldByName('code_spec').AsString);
+  CoNSQL.TempQuery.Next;
+  CoNSQL.MyRave.SetParam('DTNS2',CoNSQL.TempQuery.FieldByName('name_spec').AsString);
+  CoNSQL.MyRave.SetParam('DTKS2',CoNSQL.TempQuery.FieldByName('code_spec').AsString);
+  CoNSQL.TempQuery.Next;
+  CoNSQL.MyRave.SetParam('DTNS3',CoNSQL.TempQuery.FieldByName('name_spec').AsString);
+  CoNSQL.MyRave.SetParam('DTKS3',CoNSQL.TempQuery.FieldByName('code_spec').AsString);
+  CoNSQL.TempQuery.SQL.Text:='SELECT numb_at,avgn,date_of_issue FROM atestat WHERE id_statement = :1';
+  CoNSQL.TempQuery.Parameters.ParseSQL(CoNSQL.TempQuery.SQL.Text,true);
+  CoNSQL.TempQuery.Parameters.ParamByName('1').Value:=temp_id;
+  CoNSQL.TempQuery.Open;
+  CoNSQL.MyRave.SetParam('DTANB',CoNSQL.TempQuery.FieldByName('numb_at').AsString);
+  CoNSQL.MyRave.SetParam('DTASB',CoNSQL.TempQuery.FieldByName('avgn').AsString);
+  CoNSQL.MyRave.SetParam('DTADI',CoNSQL.TempQuery.FieldByName('date_of_issue').AsString);
+  CoNSQL.TempQuery.SQL.Text:='SELECT name FROM benefits WHERE id_statement = :1';
+  CoNSQL.TempQuery.Parameters.ParseSQL(CoNSQL.TempQuery.SQL.Text,true);
+  CoNSQL.TempQuery.Parameters.ParamByName('1').Value:=temp_id;
+  CoNSQL.TempQuery.Open;
+  if not(CoNSQL.TempQuery.IsEmpty) then
+  CoNSQL.MyRave.SetParam('DTNBN',CoNSQL.TempQuery.FieldByName('name').AsString) else
+  CoNSQL.MyRave.SetParam('DTNBN','-');
+  CoNSQL.MyRave.Close;
+  CoNSQL.MyRave.ProjectFile:='.\ravki\Za9vl.rav';
+  CoNSQL.MyRave.Execute;
 end;
 
 procedure TMainUserForm.N28Click(Sender: TObject);
+var temp_id:integer; temp_s:string;
 begin
-  aborted;
-end;
-
-procedure TMainUserForm.N16Click(Sender: TObject);
-begin
-  aborted;
-end;
-
-procedure TMainUserForm.N17Click(Sender: TObject);
-begin
-  aborted;
-end;
-
-procedure TMainUserForm.N23Click(Sender: TObject);
-begin
-  CoNSQL.ADOQuery4.SQL.Text:='exec sel_count_kurs';
-  CoNSQL.ADOQuery4.Open;
-  showmessage('Количество студентов проходивших курсы : ' + CoNSQL.ADOQuery4.Fields.Fields[0].AsString);
+  CoNSQL.MyRave.SetParam('DTDAT',datetostr(Date));
+  temp_s:='"'+CoNSQL.ADOQuery3.FieldByName('Фамилия').AsString+' '+
+  CoNSQL.ADOQuery3.FieldByName('Имя').AsString+' '+
+  CoNSQL.ADOQuery3.FieldByName('Отчество').AsString+'"';
+  temp_id:=CoNSQL.ADOQuery3.FieldByName('ID').AsInteger;
+  CoNSQL.MyRave.SetParam('DTSTD',temp_s);
+  CoNSQL.TempQuery.SQL.Text:='SELECT name FROM document INNER JOIN documents '+
+  'ON document.numb_doc = documents.numb_doc WHERE id_statement = :1';
+  CoNSQL.TempQuery.Parameters.ParseSQL(CoNSQL.TempQuery.SQL.Text,true);
+  CoNSQL.TempQuery.Parameters.ParamByName('1').Value:=temp_id;
+  CoNSQL.TempQuery.Open;
+  CoNSQL.MyRave.Close;
+  CoNSQL.MyRave.ProjectFile:='.\ravki\rasp.rav';
+  CoNSQL.MyRave.Execute;
 end;
 
 procedure TMainUserForm.N24Click(Sender: TObject);
 begin
-  CoNSQL.ADOQuery4.SQL.Text:='exec sel_count_prow';
+  CoNSQL.TempQuery.SQL.Text:='SELECT COUNT(*) FROM abiture WHERE training_courses = 1';
+  CoNSQL.TempQuery.Open;
+  StatistForm.Label3.Caption:=CoNSQL.TempQuery.Fields.Fields[0].AsString;
+  CoNSQL.TempQuery.SQL.Text:='SELECT COUNT(*) FROM abiture INNER JOIN benefits '+
+  'ON abiture.id_statement = benefits.id_statement';
+  CoNSQL.TempQuery.Open;
+  StatistForm.Label5.Caption:=CoNSQL.TempQuery.Fields.Fields[0].AsString;
+  CoNSQL.ADOQuery4.SQL.Text:='SELECT name_spec AS [Специальность], places AS [Мест],'+
+  ' prowed AS [Прошедшие], ne_prowed AS [Не прошедшие] FROM abit_prow';
   CoNSQL.ADOQuery4.Open;
+  if not(CoNSQL.ADOQuery4.IsEmpty) then
+  Begin
+    StatistForm.DBGrid1.Columns[0].Width:=350;
+    StatistForm.DBGrid1.Columns[1].Width:=75;
+    StatistForm.DBGrid1.Columns[2].Width:=75;
+    StatistForm.DBGrid1.Columns[3].Width:=85;
+  end;
   StatistForm.showmodal;
 end;
 
@@ -565,6 +621,28 @@ begin
 	  form4.Edit3.Text:='thisishesh';
 	  form4.ShowModal;
   end else showmessage('Access denied!');
+end;
+
+procedure TMainUserForm.N22Click(Sender: TObject);
+begin
+  CoNSQL.TempQuery.SQL.Text:='SELECT COUNT(*) FROM abiture WHERE training_courses = 1';
+  CoNSQL.TempQuery.Open;
+  StatistForm.Label3.Caption:=CoNSQL.TempQuery.Fields.Fields[0].AsString;
+  CoNSQL.TempQuery.SQL.Text:='SELECT COUNT(*) FROM abiture INNER JOIN benefits '+
+  'ON abiture.id_statement = benefits.id_statement';
+  CoNSQL.TempQuery.Open;
+  StatistForm.Label5.Caption:=CoNSQL.TempQuery.Fields.Fields[0].AsString;
+  CoNSQL.ADOQuery4.SQL.Text:='SELECT name_spec AS [Специальность], places AS [Мест],'+
+  ' prowed AS [Прошедшие], ne_prowed AS [Не прошедшие] FROM abit_prow';
+  CoNSQL.ADOQuery4.Open;
+  if not(CoNSQL.ADOQuery4.IsEmpty) then
+  Begin
+    StatistForm.DBGrid1.Columns[0].Width:=350;
+    StatistForm.DBGrid1.Columns[1].Width:=75;
+    StatistForm.DBGrid1.Columns[2].Width:=75;
+    StatistForm.DBGrid1.Columns[3].Width:=85;
+  end;
+  StatistForm.showmodal;
 end;
 
 end.

@@ -123,18 +123,7 @@ object MainUserForm: TMainUserForm
       end
       object N22: TMenuItem
         Caption = #1057#1090#1072#1090#1080#1089#1090#1080#1082#1072
-        object N23: TMenuItem
-          Caption = #1055#1088#1086#1093#1086#1076#1080#1083#1080' '#1082#1091#1088#1089#1099' ('#1082#1086#1083'-'#1074#1086')'
-          OnClick = N23Click
-        end
-        object N24: TMenuItem
-          Caption = #1047#1072#1095#1080#1089#1083#1077#1085#1086' '#1085#1072' '#1073#1102#1076#1078#1077#1090' ('#1082#1086#1083'-'#1074#1086')'
-          OnClick = N24Click
-        end
-        object N25: TMenuItem
-          Caption = #1051#1100#1075#1086#1090#1085#1080#1082#1086#1074' ('#1082#1086#1083'-'#1074#1086')'
-          OnClick = N25Click
-        end
+        OnClick = N22Click
       end
       object N6: TMenuItem
         Caption = #1041#1086#1083#1100#1096#1077' '#1076#1072#1085#1085#1099#1093'...'

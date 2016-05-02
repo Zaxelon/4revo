@@ -22,6 +22,7 @@ type
     MyRave: TRvProject;
     CheckRole: TADOQuery;
     TempQuery: TADOQuery;
+    RvDtStCoN2: TRvDataSetConnection;
     procedure ADOQuery3BeforeInsert(DataSet: TDataSet);
   private
     { Private declarations }

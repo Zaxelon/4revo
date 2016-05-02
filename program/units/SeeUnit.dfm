@@ -3,6 +3,7 @@ object SeeForm: TSeeForm
   Top = 275
   Width = 560
   Height = 624
+  Caption = #1057#1087#1080#1089#1086#1082' '#1072#1073#1080#1090#1091#1088#1080#1077#1085#1090#1086#1074
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -32,9 +33,9 @@ object SeeForm: TSeeForm
   object Label1: TLabel
     Left = 319
     Top = 0
-    Width = 179
+    Width = 177
     Height = 24
-    Caption = #1055#1077#1088#1074#1099#1084' '#1087#1088#1080#1086#1088#1080#1090#1077#1090':'
+    Caption = #1055#1077#1088#1074#1099#1081' '#1087#1088#1080#1086#1088#1080#1090#1077#1090':'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -19
