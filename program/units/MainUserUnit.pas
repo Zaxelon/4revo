@@ -66,6 +66,7 @@ type
   private
     see_abit_atest:byte;
   public
+    uwpdate:boolean;
     procedure aborted;
     function show_your_atest:byte;
   end;
@@ -78,7 +79,8 @@ implementation
 
 {$R *.dfm}
 uses ForMeMComp, Add_obwee, AuthUnit, add_abiture, pasport, Doc_unit,
-  pasp_rod, Priem, SeeUnit, Prohball, StForm, ATableForm, ChangePassUnit, UserUnit;
+  pasp_rod, Priem, SeeUnit, Prohball, StForm, ATableForm, ChangePassUnit, UserUnit,
+  OGE, Lgot, atestat;
 
 procedure TMainUserForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
@@ -119,6 +121,7 @@ end;
 
 procedure TMainUserForm.N2Click(Sender: TObject);
 begin
+  uwpdate:=false;
   with addstudform do
   Begin
     is_insert:=true;
@@ -183,6 +186,22 @@ begin
     edit8.Text:='';
   end;
 
+  with Atest_form do
+  Begin
+    edit1.Text:='';
+    edit2.Text:='';
+    edit3.Text:='';
+    CheckBox1.checked:=false;
+    edit5.date:=Date;
+  end;
+
+  with OGEG do
+  Begin
+    edit1.Text:='';
+    edit3.Text:='';
+    edit5.date:=Date;
+  end;
+
   with Priem_form do
   Begin
     CoNSQL.adoquery2.SQL.Clear;
@@ -199,6 +218,12 @@ begin
       CoNSQL.adoquery2.Next;
     end;
     CoNSQL.ADOQuery2.SQL.Clear;
+  end;
+
+  with LgotForm do
+  Begin
+    edit1.Text:='';
+    edit2.Text:='';
   end;
 
   addstudform.ShowModal;
@@ -265,10 +290,9 @@ begin
 end;
 
 procedure TMainUserForm.N3Click(Sender: TObject);
-var temp_s:string;
-    temp_i:integer;
 begin
   aborted;//в разработке
+  uwpdate:=true;
   with addstudform do
   Begin
     abit_id:=Consql.ADOQuery3.FieldByName('ID').AsInteger;
@@ -290,7 +314,10 @@ begin
     f_is_lgt;
   end;
 
-  CoNSQL.ADOQuery1.SQL.Text:='SELECT * FROM abiture WHERE id_statement='+inttostr(addstudform.abit_id);
+  CoNSQL.ADOQuery1.SQL.Text:='SELECT surname,first_name,middle_name,is_male,'+
+  'CONVERT(varchar(30), birthday, 104) AS [DDate],phone,address,training_courses FROM abiture WHERE id_statement=:1';
+  CoNSQL.ADOQuery1.Parameters.ParseSQL(CoNSQL.ADOQuery1.SQL.Text,true);
+  CoNSQL.ADOQuery1.Parameters.ParamByName('1').Value:= addstudform.abit_id;
   CoNSQL.ADOQuery1.Open;
   with AddObweeForm do
   Begin
@@ -300,15 +327,16 @@ begin
     if (Consql.ADOQuery1.FieldByName('is_male').AsBoolean) then
     Begin RadioButton1.Checked:=true; end else
     Begin RadioButton1.Checked:=false; RadioButton2.Checked:=true; end;
-    temp_s:=Consql.ADOQuery1.FieldByName('birthday').AsString;
-    for temp_i:=1 to length(temp_s) do
-    if temp_s[temp_i]='-' then temp_s[temp_i]:='.';
+    edit5.Date:=strtodate(Consql.ADOQuery1.FieldByName('DDate').AsString);
     edit6.Text:=Consql.ADOQuery1.FieldByName('phone').AsString;
     edit7.Text:=Consql.ADOQuery1.FieldByName('address').AsString;;
     Checkbox1.Checked:=Consql.ADOQuery1.FieldByName('training_courses').AsBoolean;
   end;
 
-  CoNSQL.ADOQuery1.SQL.Text:='SELECT * FROM pasport WHERE id_statement='+inttostr(addstudform.abit_id);
+  CoNSQL.ADOQuery1.SQL.Text:='SELECT series,numb,place_of_birth,issued_by,'+
+  'CONVERT(varchar(30),date_of_issue, 104) AS [DDate] FROM pasport WHERE id_statement=:1';
+  CoNSQL.ADOQuery1.Parameters.ParseSQL(CoNSQL.ADOQuery1.SQL.Text,true);
+  CoNSQL.ADOQuery1.Parameters.ParamByName('1').Value:= addstudform.abit_id;
   CoNSQL.ADOQuery1.Open;
   with PasportForm do
   Begin
@@ -316,13 +344,28 @@ begin
     edit2.Text:=CoNSQL.ADOQuery1.FieldByName('numb').AsString;;
     edit3.Text:=CoNSQL.ADOQuery1.FieldByName('place_of_birth').AsString;
     edit4.Text:=CoNSQL.ADOQuery1.FieldByName('issued_by').AsString;;
+    edit5.Date:=strtodate(Consql.ADOQuery1.FieldByName('DDate').AsString);
   end;
 
+  CoNSQL.ADOQuery1.SQL.Text:='SELECT document.name FROM document INNER JOIN documents ON document.numb_doc = documents.numb_doc '+
+  'WHERE documents.id_statement = :1';
+  CoNSQL.ADOQuery1.Parameters.ParseSQL(CoNSQL.ADOQuery1.SQL.Text,true);
+  CoNSQL.ADOQuery1.Parameters.ParamByName('1').Value:= addstudform.abit_id;
+  CoNSQL.ADOQuery1.Open;
   with Doc_form do
   Begin
     ListBox1.Clear;
     ListBox2.Clear;
-    CoNSQL.ADOQuery1.SQL.Text:='SELECT name FROM document';
+    While not consql.ADOQuery1.Eof do
+    begin
+      ListBox1.Items.Add(consql.ADOQuery1.FieldByName('name').AsString);
+      consql.ADOQuery1.Next;
+    end;
+    CoNSQL.ADOQuery1.SQL.Text:='SELECT name FROM document WHERE name NOT IN '+
+    '(SELECT document.name FROM document INNER JOIN documents ON '+
+    'document.numb_doc = documents.numb_doc WHERE documents.id_statement = :1)';
+    CoNSQL.ADOQuery1.Parameters.ParseSQL(CoNSQL.ADOQuery1.SQL.Text,true);
+    CoNSQL.ADOQuery1.Parameters.ParamByName('1').Value:= addstudform.abit_id;
     CoNSQL.ADOQuery1.Open;
     While not consql.ADOQuery1.Eof do
     begin
@@ -331,23 +374,57 @@ begin
     end;
   end;
 
-  CoNSQL.ADOQuery1.SQL.Text:='SELECT * FROM pasp_rod WHERE id_statement='+inttostr(addstudform.abit_id);
+  CoNSQL.ADOQuery1.SQL.Text:='SELECT series,numb,surname,first_name,middle_name,place_of_birth, '+
+  'CONVERT(varchar(30), birthday, 104) AS [DDate] FROM pasp_rod WHERE id_statement=:1';
+  CoNSQL.ADOQuery1.Parameters.ParseSQL(CoNSQL.ADOQuery1.SQL.Text,true);
+  CoNSQL.ADOQuery1.Parameters.ParamByName('1').Value:= addstudform.abit_id;
   CoNSQL.ADOQuery1.Open;
   with Pasp_rod_Form do
   Begin
     edit1.Text:=CoNSQL.ADOQuery1.FieldByName('series').AsString;
-    edit2.Text:=CoNSQL.ADOQuery1.FieldByName('numb').AsString;;
+    edit2.Text:=CoNSQL.ADOQuery1.FieldByName('numb').AsString;
     edit3.Text:=CoNSQL.ADOQuery1.FieldByName('place_of_birth').AsString;
-    //Edit5.date:=
+    edit5.Date:=strtodate(Consql.ADOQuery1.FieldByName('DDate').AsString);
     edit6.Text:=Consql.ADOQuery1.FieldByName('surname').AsString;
     edit7.Text:=Consql.ADOQuery1.FieldByName('first_name').AsString;
     edit8.Text:=Consql.ADOQuery1.FieldByName('middle_name').AsString;
   end;
 
-  CoNSQL.ADOQuery1.SQL.Text:='SELECT * FROM priem WHERE id_statement='+inttostr(addstudform.abit_id);
+  CoNSQL.ADOQuery1.SQL.Text:='SELECT numb_at,institution,s_otl,avgn, '+
+  'CONVERT(varchar(30), date_of_issue, 104) AS [DDate] FROM atestat WHERE id_statement=:1';
+  CoNSQL.ADOQuery1.Parameters.ParseSQL(CoNSQL.ADOQuery1.SQL.Text,true);
+  CoNSQL.ADOQuery1.Parameters.ParamByName('1').Value:= addstudform.abit_id;
+  CoNSQL.ADOQuery1.Open;
+  with Atest_form do
+  Begin
+    edit1.Text:=CoNSQL.ADOQuery1.FieldByName('numb_at').AsString;
+    edit2.Text:=CoNSQL.ADOQuery1.FieldByName('institution').AsString;
+    edit3.Text:=CoNSQL.ADOQuery1.FieldByName('avgn').AsString;;
+    Checkbox1.Checked:=Consql.ADOQuery1.FieldByName('s_otl').AsBoolean;
+    edit5.Date:=strtodate(Consql.ADOQuery1.FieldByName('DDate').AsString);
+  end;
+
+  CoNSQL.ADOQuery1.SQL.Text:='SELECT numb_sv,avg_oge, '+
+  'CONVERT(varchar(30), date_of_issue, 104) AS [DDate] FROM oge WHERE id_statement=:1';
+  CoNSQL.ADOQuery1.Parameters.ParseSQL(CoNSQL.ADOQuery1.SQL.Text,true);
+  CoNSQL.ADOQuery1.Parameters.ParamByName('1').Value:= addstudform.abit_id;
+  CoNSQL.ADOQuery1.Open;
+  with OGEG do
+  Begin
+    edit1.Text:=CoNSQL.ADOQuery1.FieldByName('numb_sv').AsString;
+    edit3.Text:=CoNSQL.ADOQuery1.FieldByName('avg_oge').AsString;
+    edit5.date:=strtodate(Consql.ADOQuery1.FieldByName('DDate').AsString);
+  end;
+
+  CoNSQL.ADOQuery1.SQL.Text:='EXEC priem_doz :1';
+  CoNSQL.ADOQuery1.Parameters.ParseSQL(CoNSQL.ADOQuery1.SQL.Text,true);
+  CoNSQL.ADOQuery1.Parameters.ParamByName('1').Value:= addstudform.abit_id;
   CoNSQL.ADOQuery1.Open;
   with Priem_form do
   Begin
+    ComboBox1.Clear;
+    ComboBox2.Clear;
+    ComboBox3.Clear;
     CoNSQL.adoquery2.SQL.Clear;
     CoNSQL.adoquery2.SQL.add('SELECT name_spec AS VGA FROM specialty');
     CoNSQL.adoquery2.open;
@@ -359,8 +436,32 @@ begin
       CoNSQL.adoquery2.Next;
     end;
     CoNSQL.ADOQuery2.SQL.Clear;
+    if Not(CoNSQL.ADOQuery1.IsEmpty) and not(CoNSQL.ADOQuery1.Eof) then
+    Begin
+      Combobox1.ItemIndex:=CoNSQL.ADOQuery1.FieldByName('num').AsInteger-1;
+      CoNSQL.ADOQuery1.Next;
+    end;
+    if Not(CoNSQL.ADOQuery1.IsEmpty) and not(CoNSQL.ADOQuery1.Eof) then
+    Begin
+      Combobox2.ItemIndex:=CoNSQL.ADOQuery1.FieldByName('num').AsInteger-1;
+      CoNSQL.ADOQuery1.Next;
+    end;
+    if Not(CoNSQL.ADOQuery1.IsEmpty) and not(CoNSQL.ADOQuery1.Eof) then
+    Begin
+      Combobox3.ItemIndex:=CoNSQL.ADOQuery1.FieldByName('num').AsInteger-1;
+      CoNSQL.ADOQuery1.Next;
+    end;
   end;
 
+  CoNSQL.ADOQuery1.SQL.Text:='SELECT name,document_number FROM benefits WHERE id_statement=:1';
+  CoNSQL.ADOQuery1.Parameters.ParseSQL(CoNSQL.ADOQuery1.SQL.Text,true);
+  CoNSQL.ADOQuery1.Parameters.ParamByName('1').Value:= addstudform.abit_id;
+  CoNSQL.ADOQuery1.Open;
+  with LgotForm do
+  Begin
+    edit1.Text:=CoNSQL.ADOQuery1.FieldByName('name').AsString;
+    edit2.Text:=CoNSQL.ADOQuery1.FieldByName('document_number').AsString;
+  end;
   addstudform.ShowModal;
 end;
 

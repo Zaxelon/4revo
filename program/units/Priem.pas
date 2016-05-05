@@ -40,8 +40,8 @@ begin
   (ComboBox1.Items[ComboBox1.itemindex]<>'')) then
   Begin
     close;
-    addstudform.Label5.Caption:='+';
-    addstudform.Label5.Font.Color:=clgreen;
+    addstudform.Label7.Caption:='+';
+    addstudform.Label7.Font.Color:=clgreen;
   end else
   Begin
     showmessage('Не все поля верно заполнены');
@@ -54,8 +54,8 @@ begin
   if not((ComboBox1.Items[ComboBox1.itemindex]<>'')and (ComboBox2.Items[ComboBox1.itemindex]<>'')and
   (ComboBox1.Items[ComboBox1.itemindex]<>'')) then
   Begin
-    addstudform.Label6.Caption:='X';
-    addstudform.Label6.Font.Color:=clred;
+    addstudform.Label7.Caption:='X';
+    addstudform.Label7.Font.Color:=clred;
   end;
   CoNSQL.ADOQuery2.SQL.Clear;
 end;

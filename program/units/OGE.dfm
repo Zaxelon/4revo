@@ -1,6 +1,6 @@
 object OGEG: TOGEG
-  Left = 367
-  Top = 448
+  Left = 585
+  Top = 423
   Width = 342
   Height = 160
   Caption = #1054#1043#1069

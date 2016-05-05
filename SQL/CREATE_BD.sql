@@ -74,8 +74,8 @@ id_dc int IDENTITY(1,1),
 id_statement int NOT NULL,
 numb_doc int NOT NULL,
 PRIMARY KEY (id_dc),
-FOREIGN KEY (id_statement) REFERENCES abiture(id_statement),
-FOREIGN KEY (numb_doc) REFERENCES document(numb_doc) ON DELETE CASCADE ON UPDATE CASCADE
+FOREIGN KEY (id_statement) REFERENCES abiture(id_statement) ON DELETE CASCADE ON UPDATE CASCADE, 
+FOREIGN KEY (numb_doc) REFERENCES document(numb_doc) ON UPDATE CASCADE
 );
 GO
 CREATE TABLE pasp_rod (
@@ -115,8 +115,8 @@ id_spec int NOT NULL,
 priority int NOT NULL,
 CHECK (priority>0 and priority<4),
 PRIMARY KEY (id_pos),
-FOREIGN KEY (id_statement) REFERENCES abiture(id_statement) ON UPDATE CASCADE,
-FOREIGN KEY (id_spec) REFERENCES specialty(id_spec) ON DELETE CASCADE ON UPDATE CASCADE 
+FOREIGN KEY (id_statement) REFERENCES abiture(id_statement) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (id_spec) REFERENCES specialty(id_spec) ON UPDATE CASCADE 
 );
 GO
 CREATE TABLE atestat (
@@ -156,69 +156,12 @@ ne_prowed INT
 );
 
 GO
-CREATE PROCEDURE add_abiture
-	@surname varchar(50),
-	@first_name varchar(20),
-	@middle_name varchar(30),	
-	@is_male bit,
-	@birthday date,
-	@phone varchar(11),
-	@address varchar(50),
-	@training_courses bit
-AS
-INSERT INTO abiture(surname,first_name,middle_name,is_male,birthday,phone,address,training_courses,date_of_application) VALUES
-(@surname,@first_name,@middle_name,@is_male,@birthday,@phone,@address,@training_courses,CONVERT(date,GETDATE()))
-GO
-CREATE PROCEDURE add_pasport
-	@id_statement int,
-	@series int,
-	@numb int,
-	@place_of_birth varchar(70),	
-	@issued_by varchar(100),
-	@date_of_issue date
-AS
-INSERT INTO pasport(id_statement,series,numb,place_of_birth,issued_by,date_of_issue) VALUES
-(@id_statement,@series,@numb,@place_of_birth,@issued_by,@date_of_issue)
-GO
 CREATE PROCEDURE add_doc
 	@id_statement int,
 	@name varchar(50)
 AS
 INSERT INTO documents(id_statement,numb_doc) VALUES
 (@id_statement,(SELECT TOP 1 numb_doc from document WHERE (name=@name)))
-GO
-CREATE PROCEDURE add_pasp_rod
-	@id_statement int,
-	@series int,
-	@numb int,
-	@surnmae varchar(30),
-	@frist_name varchar(20),
-	@middle_name varchar(30),
-	@birthday date,
-	@place_of_birth varchar(70)
-AS
-INSERT INTO pasp_rod(id_statement,series,numb,surname,first_name,middle_name,birthday,place_of_birth) VALUES
-(@id_statement,@series,@numb,@surnmae,@frist_name,@middle_name,@birthday,@place_of_birth)
-GO
-CREATE PROCEDURE add_atest
-	@id_statement int,
-	@numb_at int,
-	@institution varchar(50),
-	@s_otl bit,
-	@avgn decimal(3,2),
-	@date_of_issue date
-AS
-INSERT INTO atestat(id_statement,numb_at,institution,s_otl,avgn,date_of_issue) VALUES
-(@id_statement,@numb_at,@institution,@s_otl,@avgn,@date_of_issue)
-GO
-CREATE PROCEDURE add_oge
-	@id_statement int,
-	@numb_sv int,
-	@avg_oge decimal(3,2),
-	@date_of_issue date
-AS
-INSERT INTO oge(id_statement,numb_sv,avg_oge,date_of_issue) VALUES
-(@id_statement,@numb_sv,@avg_oge,@date_of_issue)
 GO
 CREATE PROCEDURE add_priem
 	@id_statement int,
@@ -227,14 +170,6 @@ CREATE PROCEDURE add_priem
 AS
 INSERT INTO priem(id_statement,id_spec,priority) VALUES
 (@id_statement,(SELECT TOP 1 id_spec FROM specialty WHERE (name_spec = @name_spec)),@priority)
-GO
-CREATE PROCEDURE add_benfit
-	@id_statement int,
-	@name varchar(50),
-	@document_number varchar(20)
-AS
-INSERT INTO benefits(id_statement,name,document_number) VALUES
-(@id_statement,@name,@document_number)
 GO
 CREATE PROCEDURE sel_title
 	@surname varchar(50)
@@ -251,6 +186,21 @@ SELECT id_statement AS ID, surname AS [Фамилия], first_name AS [Имя],
 middle_name AS [Отчество],birthday AS [День рождения], phone AS [Номер],
 address AS [Адрес] FROM abiture
 WHERE (surname like @bum)
+GO
+CREATE PROCEDURE priem_doz
+@kot INT
+AS
+Begin
+DECLARE @port table
+(
+num int IDENTITY,
+name_spec varchar(100)
+)
+INSERT INTO @port SELECT name_spec FROM specialty
+SELECT num FROM @port 
+WHERE name_spec in (SELECT name_spec AS [TJK] FROM specialty INNER JOIN priem ON
+    priem.id_spec = specialty.id_spec WHERE id_statement= @kot)
+end
 GO
 CREATE PROCEDURE sel_avg_atest
 @name_spec varchar(100),
@@ -1057,10 +1007,6 @@ GRANT EXECUTE ON [dbo].[proh_ball] TO [Secretar]
 GO
 use [priemka]
 GO
-GRANT EXECUTE ON [dbo].[add_abiture] TO [Secretar]
-GO
-use [priemka]
-GO
 GRANT EXECUTE ON [dbo].[add_priem] TO [Secretar]
 GO
 use [priemka]
@@ -1098,6 +1044,10 @@ GO
 use [priemka]
 GO
 GRANT EXECUTE ON [dbo].[sel_title] TO [Secretar]
+GO
+use [priemka]
+GO
+GRANT EXECUTE ON [dbo].[priem_doz] TO [Secretar]
 GO
 use [priemka]
 GO
@@ -1145,10 +1095,6 @@ GRANT EXECUTE ON [dbo].[add_doc] TO [Secretar]
 GO
 use [priemka]
 GO
-GRANT EXECUTE ON [dbo].[add_atest] TO [Secretar]
-GO
-use [priemka]
-GO
 GRANT INSERT ON [dbo].[documents] TO [Secretar]
 GO
 use [priemka]
@@ -1173,10 +1119,6 @@ GRANT EXECUTE ON [dbo].[see_all_table] TO [Secretar]
 GO
 use [priemka]
 GO
-GRANT EXECUTE ON [dbo].[add_oge] TO [Secretar]
-GO
-use [priemka]
-GO
 GRANT INSERT ON [dbo].[abiture] TO [Secretar]
 GO
 use [priemka]
@@ -1194,18 +1136,6 @@ GO
 use [priemka]
 GO
 GRANT EXECUTE ON [dbo].[ne_prowedwie] TO [Secretar]
-GO
-use [priemka]
-GO
-GRANT EXECUTE ON [dbo].[add_benfit] TO [Secretar]
-GO
-use [priemka]
-GO
-GRANT EXECUTE ON [dbo].[add_pasport] TO [Secretar]
-GO
-use [priemka]
-GO
-GRANT EXECUTE ON [dbo].[add_pasp_rod] TO [Secretar]
 GO
 use [priemka]
 GO

@@ -1,6 +1,6 @@
 object Atest_form: TAtest_form
-  Left = 328
-  Top = 288
+  Left = 597
+  Top = 331
   Width = 343
   Height = 207
   Caption = #1040#1090#1077#1089#1090#1072#1090

@@ -1,6 +1,6 @@
 object AddObweeForm: TAddObweeForm
-  Left = 825
-  Top = 278
+  Left = 542
+  Top = 338
   BorderStyle = bsSingle
   Caption = #1054#1073#1097#1077#1077
   ClientHeight = 242

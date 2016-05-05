@@ -53,6 +53,8 @@ MainUserForm.Npravka.Visible:=false;
 MainUserForm.Nsee.Visible:=false;
 MainUserForm.Nstar_sekt.Visible:=false;
 MainUserForm.Nstar_admin.Visible:=false;
+MainUserForm.Label2.Visible:=false;
+MainUserForm.Edit1.Visible:=false;
 Label3.Caption:='';
   if Edit1.Text='' then Label3.Caption:='¬ведите логин.' else
   if Edit2.Text='' then Label3.Caption:='¬ведите пароль.' else

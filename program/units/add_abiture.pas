@@ -60,7 +60,7 @@ implementation
 
 {$R *.dfm}
 uses Add_obwee, pasport, ForMeMComp, doc_unit, pasp_rod, atestat, OGE,
-  Priem, Lgot;
+  Priem, Lgot, MainUserUnit;
 
 procedure Taddstudform.f_is_lgt;
 begin
@@ -89,16 +89,43 @@ end;
 
 procedure Taddstudform.Button3Click(Sender: TObject);
 begin
-  insert_obw;
-  insert_pasp;
-  insert_doc;
-  insert_pasp_rod;
-  insert_atest;
-  insert_oge;
-  insert_priem;
-  if is_benfit then insert_benfit;
-  showmessage('Абитуриент успешно добавлен');
-  close;
+  if (label1.Caption='+') and (label2.Caption='+') and (label3.Caption='+')
+  and (label4.Caption='+') and (label5.Caption='+') and (label6.Caption='+')
+  and (label7.Caption='+') then
+  Begin
+    if MainUserForm.uwpdate then
+    Begin
+      CoNSQL.ADOQuery2.SQL.Text:='DELETE FROM abiture WHERE id_statement = :1';
+      CoNSQL.ADOQuery2.Parameters.ParseSQL(CoNSQL.ADOQuery2.SQL.Text,true);
+      CoNSQL.ADOQuery2.Parameters.ParamByName('1').Value:= abit_id;
+      CoNSQL.ADOQuery2.ExecSQL;
+    end;
+    insert_obw;
+    insert_pasp;
+    insert_doc;
+    insert_pasp_rod;
+    insert_atest;
+    insert_oge;
+    insert_priem;
+    if is_benfit then insert_benfit;
+    showmessage('Абитуриент успешно добавлен');
+    CoNSQL.ADOQuery3.SQL.Text:='exec sel_title :1';
+    CoNSQL.ADOQuery3.Parameters.ParseSQL(CoNSQL.ADOQuery3.SQL.Text,true);
+    CoNSQL.ADOQuery3.Parameters.ParamByName('1').Value:= '';
+    CoNSQL.ADOQuery3.Open;
+    if not(CoNSQL.ADOQuery3.IsEmpty) then
+    Begin
+      MainUserForm.DBGrid1.Columns[0].Width:=30;
+      MainUserForm.DBGrid1.Columns[1].Width:=100;
+      MainUserForm.DBGrid1.Columns[2].Width:=75;
+      MainUserForm.DBGrid1.Columns[3].Width:=100;
+      MainUserForm.DBGrid1.Columns[6].Width:=275;
+    end;
+    close;
+  end else
+  Begin
+    showmessage('Вы заполнили не все требуемые данные');
+  end;
 end;
 
 procedure Taddstudform.Button4Click(Sender: TObject);
@@ -112,18 +139,24 @@ begin
 end;
 
 procedure Taddstudform.insert_obw;
-var temp_str:string;
 begin
-  with AddObweeForm do
-  Begin
-    temp_str:='EXEC add_abiture @surname='+'N'+#39+Edit1.text+#39+',@first_name='+'N'+#39+Edit2.text+#39+',@middle_name='+
-    'N'+#39+Edit3.text+#39+',@is_male='+booltostr(RadioButton1.Checked)+',@birthday='+#39+datetostr(Edit5.date)+#39+',@phone='+
-    'N'+#39+Edit6.text+#39+',@address='+'N'+#39+Edit7.text+#39+',@training_courses='+booltostr(CheckBox1.checked);
-  end;
   with CoNSQL do
   Begin
-    ADOQuery2.SQL.Clear;
-    ADOQuery2.SQL.Text:=temp_str;
+    ADOQuery2.SQL.text:=
+    'INSERT INTO abiture(surname,first_name,middle_name,is_male,birthday,phone,address,training_courses,date_of_application)'+
+    ' VALUES (:1,:2,:3,:4,:5,:6,:7,:8,CONVERT(date,GETDATE()))';
+    ADOQuery2.Parameters.ParseSQL(CoNSQL.ADOQuery2.SQL.Text,true);
+    with AddObweeForm do
+    Begin
+      ADOQuery2.Parameters.ParamByName('1').Value:=Edit1.text;
+      ADOQuery2.Parameters.ParamByName('2').Value:=Edit2.text;
+      ADOQuery2.Parameters.ParamByName('3').Value:=Edit3.text;
+      ADOQuery2.Parameters.ParamByName('4').Value:=RadioButton1.Checked;
+      ADOQuery2.Parameters.ParamByName('5').Value:=datetostr(Edit5.date);
+      ADOQuery2.Parameters.ParamByName('6').Value:=Edit6.text;
+      ADOQuery2.Parameters.ParamByName('7').Value:=Edit7.text;
+      ADOQuery2.Parameters.ParamByName('8').Value:=CheckBox1.checked;
+    end;
     ADOQuery2.ExecSQL;
     ADOQuery2.SQL.Clear;
     ADOQuery2.SQL.Add('SELECT IDENT_CURRENT('+#39+'abiture'+#39+')');
@@ -135,14 +168,21 @@ end;
 
 procedure Taddstudform.insert_pasp;
 begin
-  with PasportForm do
-  Begin
-    CoNSQL.ADOQuery2.SQL.Text:='EXEC add_pasport @id_statement='+inttostr(abit_id)+', @series='+Edit1.Text+', @numb='+Edit2.Text+
-    ', @place_of_birth=N'+#39+Edit3.Text+#39+', @issued_by=N'+#39+Edit4.Text+#39+
-    ', @date_of_issue='+#39+datetostr(Edit5.date)+#39;
-  end;
   with CoNSQL do
   Begin
+    ADOQuery2.SQL.text:=
+    'INSERT INTO pasport(id_statement,series,numb,place_of_birth,issued_by,date_of_issue)'+
+    ' VALUES (:1,:2,:3,:4,:5,:6)';
+    ADOQuery2.Parameters.ParseSQL(ADOQuery2.SQL.Text,true);
+    with PasportForm do
+    Begin
+      ADOQuery2.Parameters.ParamByName('1').Value:=abit_id;
+      ADOQuery2.Parameters.ParamByName('2').Value:=Edit1.text;
+      ADOQuery2.Parameters.ParamByName('3').Value:=Edit2.text;
+      ADOQuery2.Parameters.ParamByName('4').Value:=Edit3.Text;
+      ADOQuery2.Parameters.ParamByName('5').Value:=Edit4.Text;
+      ADOQuery2.Parameters.ParamByName('6').Value:=datetostr(Edit5.date);
+    end;
     ADOQuery2.ExecSQL;
     ADOQuery2.SQL.Clear;
   end;
@@ -171,15 +211,23 @@ end;
 
 procedure Taddstudform.insert_pasp_rod;
 begin
-  with Pasp_rod_Form do
-  Begin
-    CoNSQL.ADOQuery2.SQL.Text:='EXEC add_pasp_rod @id_statement=' + inttostr(abit_id)+
-    ',@series='+Edit1.Text+',@numb='+Edit2.Text+',@surnmae=N'+#39+Edit6.Text+#39+
-    ',@frist_name=N'+#39+Edit7.Text+#39+',@middle_name=N'+#39+Edit8.Text+#39+
-    ',@birthday='+#39+datetostr(Edit5.date)+#39+',@place_of_birth=N'+#39+Edit3.Text+#39;
-  end;
   with CoNSQL do
   Begin
+    ADOQuery2.SQL.text:=
+    'INSERT INTO pasp_rod(id_statement,series,numb,surname,first_name,middle_name,birthday,place_of_birth)'+
+    ' VALUES (:1,:2,:3,:4,:5,:6,:7,:8)';
+    ADOQuery2.Parameters.ParseSQL(ADOQuery2.SQL.Text,true);
+    with Pasp_rod_Form do
+    Begin
+      ADOQuery2.Parameters.ParamByName('1').Value:=abit_id;
+      ADOQuery2.Parameters.ParamByName('2').Value:=Edit1.text;
+      ADOQuery2.Parameters.ParamByName('3').Value:=Edit2.text;
+      ADOQuery2.Parameters.ParamByName('4').Value:=Edit6.Text;
+      ADOQuery2.Parameters.ParamByName('5').Value:=Edit7.Text;
+      ADOQuery2.Parameters.ParamByName('6').Value:=Edit8.Text;
+      ADOQuery2.Parameters.ParamByName('7').Value:=datetostr(Edit5.date);
+      ADOQuery2.Parameters.ParamByName('8').Value:=Edit3.text;
+    end;
     ADOQuery2.ExecSQL;
     ADOQuery2.SQL.Clear;
   end;
@@ -194,17 +242,24 @@ procedure Taddstudform.insert_atest;
 var temp_s:string;
     zar:integer;
 begin
-  with Atest_form do
-  Begin
-    temp_s:=Edit3.Text;
-    for zar:=0 to 4 do
-    Begin if (temp_s[zar] = ',') then temp_s[zar]:='.'; end;
-    CoNSQL.ADOQuery2.SQL.Text:='EXEC add_atest @id_statement=' + inttostr(abit_id)+
-    ',@numb_at='+ Edit1.Text+',@institution=N'+#39+Edit2.Text+#39+',@s_otl='+
-    booltostr(checkbox1.Checked)+',@avgn='+temp_s+',@date_of_issue=N'+#39+datetostr(Edit5.Date)+#39;
-  end;
+  temp_s:=Atest_form.Edit3.Text;
+  for zar:=0 to 4 do
+  Begin if (temp_s[zar] = ',') then temp_s[zar]:='.'; end;
   with CoNSQL do
   Begin
+    ADOQuery2.SQL.text:=
+    'INSERT INTO atestat(id_statement,numb_at,institution,s_otl,avgn,date_of_issue)'+
+    ' VALUES (:1,:2,:3,:4,:5,:6)';
+    ADOQuery2.Parameters.ParseSQL(ADOQuery2.SQL.Text,true);
+    with Atest_form do
+    Begin
+      ADOQuery2.Parameters.ParamByName('1').Value:=abit_id;
+      ADOQuery2.Parameters.ParamByName('2').Value:=Edit1.text;
+      ADOQuery2.Parameters.ParamByName('3').Value:=Edit2.text;
+      ADOQuery2.Parameters.ParamByName('4').Value:=Checkbox1.Checked;
+      ADOQuery2.Parameters.ParamByName('5').Value:=temp_s;
+      ADOQuery2.Parameters.ParamByName('6').Value:=datetostr(Edit5.Date);
+    end;
     ADOQuery2.ExecSQL;
     ADOQuery2.SQL.Clear;
   end;
@@ -219,16 +274,21 @@ procedure Taddstudform.insert_oge;
 var temp_s:string;
     zar:integer;
 begin
-  with OGEG do
-  Begin
-    temp_s:=Edit3.Text;
-    for zar:=0 to 4 do
-    Begin if(temp_s[zar] = ',') then temp_s[zar]:='.'; end;
-    CoNSQL.ADOQuery2.SQL.Text:='EXEC add_oge @id_statement=' + inttostr(abit_id)+
-    ',@numb_sv='+ Edit1.Text+',@avg_oge='+temp_s+',@date_of_issue=N'+#39+datetostr(Edit5.Date)+#39;
-  end;
+  temp_s:=OGEG.Edit3.Text;
+  for zar:=0 to 4 do
+  Begin if(temp_s[zar] = ',') then temp_s[zar]:='.'; end;
   with CoNSQL do
   Begin
+    ADOQuery2.SQL.text:=
+    'INSERT INTO oge(id_statement,numb_sv,avg_oge,date_of_issue) VALUES (:1,:2,:3,:4)';
+    ADOQuery2.Parameters.ParseSQL(ADOQuery2.SQL.Text,true);
+    with OGEG do
+    Begin
+      ADOQuery2.Parameters.ParamByName('1').Value:=abit_id;
+      ADOQuery2.Parameters.ParamByName('2').Value:=Edit1.text;
+      ADOQuery2.Parameters.ParamByName('3').Value:=temp_s;
+      ADOQuery2.Parameters.ParamByName('4').Value:=datetostr(Edit5.Date);
+    end;
     ADOQuery2.ExecSQL;
     ADOQuery2.SQL.Clear;
   end;
@@ -241,33 +301,56 @@ end;
 
 procedure Taddstudform.insert_priem;
 begin
-  CoNSQL.ADOQuery2.SQL.Clear;
   with Priem_form do
   Begin
-    CoNSQL.ADOQuery2.SQL.Add('EXEC add_priem @id_statement='+inttostr(abit_id)+
-    ',@name_spec=N'+#39+ComboBox1.Items[ComboBox1.itemindex]+#39+',@priority=1');
-    CoNSQL.ADOQuery2.SQL.Add('EXEC add_priem @id_statement='+inttostr(abit_id)+
-    ',@name_spec=N'+#39+ComboBox2.Items[ComboBox2.itemindex]+#39+',@priority=2');
-    CoNSQL.ADOQuery2.SQL.Add('EXEC add_priem @id_statement='+inttostr(abit_id)+
-    ',@name_spec=N'+#39+ComboBox3.Items[ComboBox3.itemindex]+#39+',@priority=3');
-  end;
-  with CoNSQL do
-  Begin
-    ADOQuery2.ExecSQL;
-    ADOQuery2.SQL.Clear;
+    with CoNSQL do
+    Begin
+      ADOQuery2.SQL.Clear;
+      if ComboBox1.Items[ComboBox1.itemindex]<>'' then
+      Begin
+      ADOQuery2.SQL.Text:='EXEC add_priem :1,:2,:7';
+      ADOQuery2.Parameters.ParseSQL(ADOQuery2.SQL.Text,true);
+      ADOQuery2.Parameters.ParamByName('1').Value:=abit_id;
+      ADOQuery2.Parameters.ParamByName('2').Value:=ComboBox1.Items[ComboBox1.itemindex];
+      ADOQuery2.Parameters.ParamByName('7').Value:=1;
+      ADOQuery2.ExecSQL;
+      end else Begin showmessage('Ошибка приема на специальности'); abort; end;
+      if ComboBox2.Items[ComboBox2.itemindex]<>'' then
+      Begin
+        ADOQuery2.SQL.Text:='EXEC add_priem :3,:4,:8';
+        ADOQuery2.Parameters.ParseSQL(ADOQuery2.SQL.Text,true);
+        ADOQuery2.Parameters.ParamByName('3').Value:=abit_id;
+        ADOQuery2.Parameters.ParamByName('4').Value:=ComboBox2.Items[ComboBox2.itemindex];
+        ADOQuery2.Parameters.ParamByName('8').Value:=2;
+        ADOQuery2.ExecSQL;
+        if ComboBox3.Items[ComboBox3.itemindex]<>'' then
+        Begin
+          ADOQuery2.SQL.Text:='EXEC add_priem :5,:6,:9';
+          ADOQuery2.Parameters.ParseSQL(ADOQuery2.SQL.Text,true);
+          ADOQuery2.Parameters.ParamByName('5').Value:=abit_id;
+          ADOQuery2.Parameters.ParamByName('6').Value:=ComboBox3.Items[ComboBox3.itemindex];
+          ADOQuery2.Parameters.ParamByName('9').Value:=3;
+          ADOQuery2.ExecSQL;
+        end;
+      end;
+      ADOQuery2.SQL.Clear;
+    end;
   end;
 end;
 
 procedure Taddstudform.insert_benfit;
 begin
-  CoNSQL.ADOQuery2.SQL.Clear;
-  with LgotForm do
-  Begin
-    CoNSQL.ADOQuery2.SQL.Text:='EXEC add_benfit @id_statement='+inttostr(abit_id)+
-    ',@name=N'+#39+Edit1.Text+#39+',@document_number=N'+#39+Edit2.Text+#39;
-  end;
   with CoNSQL do
   Begin
+    ADOQuery2.SQL.text:=
+    'INSERT INTO benefits(id_statement,name,document_number) VALUES (:1,:2,:3)';
+    ADOQuery2.Parameters.ParseSQL(ADOQuery2.SQL.Text,true);
+    with LgotForm do
+    Begin
+      ADOQuery2.Parameters.ParamByName('1').Value:=abit_id;
+      ADOQuery2.Parameters.ParamByName('2').Value:=Edit1.text;
+      ADOQuery2.Parameters.ParamByName('3').Value:=Edit2.text;
+    end;
     ADOQuery2.ExecSQL;
     ADOQuery2.SQL.Clear;
   end;

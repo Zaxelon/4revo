@@ -92,7 +92,6 @@ object Priem_form: TPriem_form
     Font.Style = []
     ItemHeight = 13
     ParentFont = False
-    Sorted = True
     TabOrder = 0
   end
   object ComboBox2: TComboBox
@@ -107,7 +106,6 @@ object Priem_form: TPriem_form
     Font.Style = []
     ItemHeight = 13
     ParentFont = False
-    Sorted = True
     TabOrder = 1
   end
   object ComboBox3: TComboBox
@@ -122,7 +120,6 @@ object Priem_form: TPriem_form
     Font.Style = []
     ItemHeight = 13
     ParentFont = False
-    Sorted = True
     TabOrder = 2
   end
   object Button2: TButton
