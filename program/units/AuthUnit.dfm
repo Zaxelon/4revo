@@ -111,6 +111,7 @@ object AuthForm: TAuthForm
     Top = 8
     Width = 145
     Height = 21
+    Style = csDropDownList
     ItemHeight = 13
     TabOrder = 3
   end

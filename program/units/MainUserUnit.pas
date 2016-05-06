@@ -96,14 +96,11 @@ Begin
     CoNSQL.ADOQuery3.Parameters.ParseSQL(CoNSQL.ADOQuery3.SQL.Text,true);
     CoNSQL.ADOQuery3.Parameters.ParamByName('1').Value:= '';
     CoNSQL.ADOQuery3.Open;
-    if not(CoNSQL.ADOQuery3.IsEmpty) then
-    Begin
-      DBGrid1.Columns[0].Width:=30;
-      DBGrid1.Columns[1].Width:=100;
-      DBGrid1.Columns[2].Width:=75;
-      DBGrid1.Columns[3].Width:=100;
-      DBGrid1.Columns[6].Width:=275;
-    end;
+    DBGrid1.Columns[0].Width:=30;
+    DBGrid1.Columns[1].Width:=100;
+    DBGrid1.Columns[2].Width:=75;
+    DBGrid1.Columns[3].Width:=100;
+    DBGrid1.Columns[6].Width:=275;
   end;
   if (CoNSQL.UserRole='Star_Secretar') then
   Begin
@@ -291,7 +288,12 @@ end;
 
 procedure TMainUserForm.N3Click(Sender: TObject);
 begin
-  aborted;//в разработке
+  CoNSQL.ADOQuery1.SQL.Text:='SELECT surname,first_name,middle_name,is_male,'+
+  'CONVERT(varchar(30), birthday, 104) AS [DDate],phone,address,training_courses FROM abiture WHERE id_statement=:1';
+  CoNSQL.ADOQuery1.Parameters.ParseSQL(CoNSQL.ADOQuery1.SQL.Text,true);
+  CoNSQL.ADOQuery1.Parameters.ParamByName('1').Value:= addstudform.abit_id;
+  CoNSQL.ADOQuery1.Open;
+  if CoNSQL.ADOQuery1.IsEmpty then abort;
   uwpdate:=true;
   with addstudform do
   Begin

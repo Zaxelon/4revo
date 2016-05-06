@@ -85,6 +85,7 @@ object Priem_form: TPriem_form
     Top = 32
     Width = 145
     Height = 21
+    Style = csDropDownList
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -99,6 +100,7 @@ object Priem_form: TPriem_form
     Top = 64
     Width = 145
     Height = 21
+    Style = csDropDownList
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -113,6 +115,7 @@ object Priem_form: TPriem_form
     Top = 96
     Width = 145
     Height = 21
+    Style = csDropDownList
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -11

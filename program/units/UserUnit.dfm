@@ -118,6 +118,7 @@ object Form4: TForm4
     Top = 32
     Width = 145
     Height = 21
+    Style = csDropDownList
     ItemHeight = 13
     TabOrder = 4
     OnKeyPress = ComboBox1KeyPress
