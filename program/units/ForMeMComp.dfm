@@ -5,7 +5,6 @@ object CoNSQL: TCoNSQL
   Height = 220
   Width = 405
   object ADOConnection1: TADOConnection
-    Connected = True
     ConnectionString = 
       'Provider=SQLOLEDB.1;Password=zaxelonorda;Persist Security Info=T' +
       'rue;User ID=sa;Initial Catalog=priemka;Data Source=ZAKURAT'
@@ -97,7 +96,6 @@ object CoNSQL: TCoNSQL
     Top = 16
   end
   object TempQuery: TADOQuery
-    Active = True
     Connection = ADOConnection1
     CursorType = ctStatic
     Parameters = <>

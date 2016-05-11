@@ -24,6 +24,7 @@ type
     procedure ComboBox1KeyPress(Sender: TObject; var Key: Char);
     procedure Edit1KeyPress(Sender: TObject; var Key: Char);
     procedure Edit3KeyPress(Sender: TObject; var Key: Char);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -124,6 +125,12 @@ end;
 procedure TForm4.Edit3KeyPress(Sender: TObject; var Key: Char);
 begin
   if (Key =' ')  then Key := #0;
+end;
+
+procedure TForm4.FormShow(Sender: TObject);
+begin
+  Edit1.Text:='';
+  Edit3.Text:='';
 end;
 
 end.

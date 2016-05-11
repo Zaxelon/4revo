@@ -14,6 +14,7 @@ object Form4: TForm4
   Position = poMainFormCenter
   OnCloseQuery = FormCloseQuery
   OnHide = FormHide
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Label2: TLabel
@@ -109,7 +110,7 @@ object Form4: TForm4
     Width = 145
     Height = 21
     MaxLength = 30
-    PasswordChar = #1035
+    PasswordChar = '*'
     TabOrder = 3
     OnKeyPress = Edit3KeyPress
   end

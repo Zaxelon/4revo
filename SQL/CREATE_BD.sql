@@ -100,7 +100,7 @@ FOREIGN KEY (id_statement) REFERENCES abiture(id_statement)  ON DELETE CASCADE O
 GO
 CREATE TABLE specialty (
 id_spec int IDENTITY(1,1),
-name_spec varchar(100) NOT NULL,
+name_spec varchar(150) NOT NULL,
 code_spec varchar(20) NOT NULL,
 CHECK (LEN(code_spec)>2),
 places int,
@@ -152,7 +152,8 @@ ID INT IDENTITY(1,1),
 name_spec varchar(50),
 places INT,
 prowed INT,
-ne_prowed INT
+ne_prowed INT,
+proh_ball varchar(20)
 );
 
 GO
@@ -478,7 +479,7 @@ BEGIN
 	end
 	FETCH PRIOR FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
 END 
-END ELSE SELECT 3 AS APoL
+END ELSE SELECT 3.00 AS APoL
 SELECT 'FALSE' AS APoL
 CLOSE zlp
 DEALLOCATE zlp
@@ -894,8 +895,12 @@ INNER JOIN dbo.abiture ON dbo.priem.id_statement = dbo.abiture.id_statement
 WHERE (dbo.specialty.name_spec = @name_spec and ((@pzkwd = 0)
 or (@pzkwd = 1 and not(dbo.priem.priority in (2,3)))))) - @count else SET @bgl = 0
 
-INSERT INTO abit_prow (name_spec, places, prowed, ne_prowed) 
-VALUES (@name_spec, @count, (SELECT COUNT(*) FROM @zpr1),@bgl) 
+DECLARE @PHP Table
+(zz varchar(20))
+INSERT @PHP
+EXEC proh_ball @name_spec,@prior,@count
+INSERT INTO abit_prow (name_spec, places, prowed, ne_prowed, proh_ball) 
+VALUES (@name_spec, @count, (SELECT COUNT(*) FROM @zpr1),@bgl, (SELECT TOP 1 * FROM @PHP)) 
 END
 
 GO
@@ -1283,6 +1288,8 @@ use [priemka]
 GO
 GRANT UPDATE ON [dbo].[document] TO [Star_Secretar]
 GO
+use [priemka]
+GO
 CREATE ROLE [Admun]
 GO
 use [priemka]
@@ -1312,12 +1319,6 @@ GO
 use [priemka]
 GO
 GRANT CONTROL TO [Admun]
-GO
-use [master]
-GO
-GRANT CONTROL TO [Admun]
-GO
-USE [master]
 GO
 use [priemka]
 GO
@@ -1360,7 +1361,6 @@ GO
 USE [priemka]
 GO
 EXEC sp_addrolemember N'Admun', N'admn_user'
---need add next line into CREATE USER ADMUN
 EXEC master..sp_addsrvrolemember @loginame = N'admn_user', @rolename = N'securityadmin'
 
 GO
