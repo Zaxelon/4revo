@@ -1,6 +1,6 @@
 object AuthForm: TAuthForm
-  Left = 605
-  Top = 764
+  Left = 1061
+  Top = 511
   BorderStyle = bsSingle
   Caption = #1040#1074#1090#1086#1088#1080#1079#1072#1094#1080#1103
   ClientHeight = 223

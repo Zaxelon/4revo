@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Spin;
+  Dialogs, StdCtrls, Spin, sEdit, sSpinEdit;
 
 type
   TProhForm = class(TForm)
@@ -13,10 +13,10 @@ type
     Label1: TLabel;
     CheckBox1: TCheckBox;
     Label3: TLabel;
-    SpinEdit1: TSpinEdit;
     Label4: TLabel;
     Label5: TLabel;
     Button1: TButton;
+    SpinEdit1: TsSpinEdit;
     procedure FormShow(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
@@ -43,7 +43,6 @@ begin
   CoNSQL.adoquery2.SQL.add('SELECT name_spec AS VGA FROM specialty');
   CoNSQL.adoquery2.open;
   ComboBox1.Clear;
-  ComboBox1.Items.Add('');
   while not(CoNSQL.adoquery2.Eof) and (CoNSQL.adoquery2.RecordCount>0) do
   Begin
     ComboBox1.Items.Add(CoNSQL.adoquery2.fieldbyname('VGA').asstring);

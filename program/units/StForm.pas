@@ -4,11 +4,10 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Grids, DBGrids, StdCtrls;
+  Dialogs, Grids, DBGrids, StdCtrls, acDBGrid;
 
 type
   TStatistForm = class(TForm)
-    DBGrid1: TDBGrid;
     Button1: TButton;
     Label1: TLabel;
     CheckBox1: TCheckBox;
@@ -16,6 +15,7 @@ type
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
+    DBGrid1: TsDBGrid;
     procedure Button1Click(Sender: TObject);
   private
     { Private declarations }

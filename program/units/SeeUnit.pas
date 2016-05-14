@@ -4,22 +4,23 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Grids, DBGrids, StdCtrls, Menus, Spin, printers;
+  Dialogs, Grids, DBGrids, StdCtrls, Menus, Spin, printers, acDBGrid,
+  sEdit, sSpinEdit;
 
 type
   TSeeForm = class(TForm)
-    DBGrid1: TDBGrid;
     ComboBox1: TComboBox;
     Label2: TLabel;
     Label1: TLabel;
     CheckBox1: TCheckBox;
     Label3: TLabel;
-    SpinEdit1: TSpinEdit;
     MainMenu1: TMainMenu;
     N1: TMenuItem;
     N2: TMenuItem;
     N3: TMenuItem;
     Button1: TButton;
+    DBGrid1: TsDBGrid;
+    SpinEdit1: TsSpinEdit;
     procedure FormShow(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure CheckBox1Click(Sender: TObject);

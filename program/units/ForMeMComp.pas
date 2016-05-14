@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Classes, ADODB, DB, RpCon, RpDefine, RpRave, RpConDS, RpRender,
-  RpRenderCanvas, RpRenderPreview;
+  RpRenderCanvas, RpRenderPreview, sSkinManager, RpBase, RpSystem;
 
 type
   TCoNSQL = class(TDataModule)
@@ -23,6 +23,7 @@ type
     CheckRole: TADOQuery;
     TempQuery: TADOQuery;
     RvDtStCoN2: TRvDataSetConnection;
+    SkinIsRough: TsSkinManager;
     procedure ADOQuery3BeforeInsert(DataSet: TDataSet);
   private
     { Private declarations }

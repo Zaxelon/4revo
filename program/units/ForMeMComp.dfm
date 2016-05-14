@@ -1,9 +1,9 @@
 object CoNSQL: TCoNSQL
   OldCreateOrder = False
-  Left = 347
-  Top = 326
+  Left = 433
+  Top = 791
   Height = 220
-  Width = 405
+  Width = 462
   object ADOConnection1: TADOConnection
     ConnectionString = 
       'Provider=SQLOLEDB.1;Password=zaxelonorda;Persist Security Info=T' +
@@ -86,6 +86,7 @@ object CoNSQL: TCoNSQL
     Top = 128
   end
   object MyRave: TRvProject
+    LoadDesigner = True
     Left = 264
     Top = 128
   end
@@ -115,5 +116,44 @@ object CoNSQL: TCoNSQL
     DataSet = TempQuery
     Left = 328
     Top = 128
+  end
+  object SkinIsRough: TsSkinManager
+    InternalSkins = <>
+    MenuSupport.IcoLineSkin = 'ICOLINE'
+    MenuSupport.ExtraLineFont.Charset = DEFAULT_CHARSET
+    MenuSupport.ExtraLineFont.Color = clWindowText
+    MenuSupport.ExtraLineFont.Height = -11
+    MenuSupport.ExtraLineFont.Name = 'MS Sans Serif'
+    MenuSupport.ExtraLineFont.Style = []
+    SkinDirectory = 'D:\#wind\Desktop\prakt\lar\Course\git_hub\program\style'
+    SkinName = 'Ubuntu'
+    SkinInfo = '10'
+    ThirdParty.ThirdEdits = 
+      'TEdit'#13#10'TMemo'#13#10'TMaskEdit'#13#10'TLabeledEdit'#13#10'THotKey'#13#10'TListBox'#13#10'TCheck' +
+      'ListBox'#13#10'TRichEdit'#13#10'TDateTimePicker'#13#10
+    ThirdParty.ThirdButtons = 'TButton'#13#10
+    ThirdParty.ThirdBitBtns = 'TBitBtn'#13#10
+    ThirdParty.ThirdCheckBoxes = 'TCheckBox'#13#10'TRadioButton'#13#10'TGroupButton'#13#10
+    ThirdParty.ThirdGroupBoxes = 'TGroupBox'#13#10'TRadioGroup'#13#10
+    ThirdParty.ThirdListViews = 'TListView'#13#10
+    ThirdParty.ThirdPanels = 'TPanel'#13#10
+    ThirdParty.ThirdGrids = 'TStringGrid'#13#10'TDrawGrid'#13#10
+    ThirdParty.ThirdTreeViews = 'TTreeView'#13#10
+    ThirdParty.ThirdComboBoxes = 'TComboBox'#13#10'TColorBox'#13#10
+    ThirdParty.ThirdWWEdits = ' '#13#10
+    ThirdParty.ThirdVirtualTrees = ' '#13#10
+    ThirdParty.ThirdGridEh = ' '#13#10
+    ThirdParty.ThirdPageControl = 'TPageControl'#13#10
+    ThirdParty.ThirdTabControl = 'TTabControl'#13#10
+    ThirdParty.ThirdToolBar = 'TToolBar'#13#10
+    ThirdParty.ThirdStatusBar = 'TStatusBar'#13#10
+    ThirdParty.ThirdSpeedButton = 'TSpeedButton'#13#10
+    ThirdParty.ThirdScrollControl = 'TScrollBox'#13#10
+    ThirdParty.ThirdUpDown = 'TUpDown'#13#10
+    ThirdParty.ThirdScrollBar = 'TScrollBar'#13#10
+    ThirdParty.ThirdStaticText = 'TStaticText'#13#10
+    ThirdParty.ThirdNativePaint = ' '#13#10
+    Left = 392
+    Top = 16
   end
 end

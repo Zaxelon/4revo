@@ -22,6 +22,7 @@ type
       Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
 
   private
     { Private declarations }
@@ -127,6 +128,11 @@ end;
 procedure TAuthForm.FormShow(Sender: TObject);
 begin
   Consql.ADOConnection1.Connected:=false;
+end;
+
+procedure TAuthForm.Button2Click(Sender: TObject);
+begin
+  MainUserForm.Show;
 end;
 
 end.

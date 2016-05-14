@@ -96,17 +96,6 @@ object ProhForm: TProhForm
     Height = 17
     TabOrder = 1
   end
-  object SpinEdit1: TSpinEdit
-    Left = 208
-    Top = 58
-    Width = 57
-    Height = 22
-    MaxValue = 100
-    MinValue = 0
-    ReadOnly = True
-    TabOrder = 2
-    Value = 0
-  end
   object Button1: TButton
     Left = 80
     Top = 128
@@ -119,7 +108,26 @@ object ProhForm: TProhForm
     Font.Name = 'Times New Roman'
     Font.Style = [fsBold, fsItalic]
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 2
     OnClick = Button1Click
+  end
+  object SpinEdit1: TsSpinEdit
+    Left = 208
+    Top = 58
+    Width = 57
+    Height = 21
+    Color = clWhite
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 3
+    Text = '0'
+    MaxValue = 0
+    MinValue = 0
+    Value = 0
   end
 end

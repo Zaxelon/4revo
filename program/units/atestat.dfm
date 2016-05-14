@@ -2,7 +2,7 @@ object Atest_form: TAtest_form
   Left = 597
   Top = 331
   Width = 343
-  Height = 207
+  Height = 211
   Caption = #1040#1090#1077#1089#1090#1072#1090
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -80,20 +80,6 @@ object Atest_form: TAtest_form
     Font.Style = []
     ParentFont = False
   end
-  object Label6: TLabel
-    Left = 120
-    Top = 168
-    Width = 91
-    Height = 21
-    Caption = #1055#1088#1077#1076#1084#1077#1090#1099' :'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -19
-    Font.Name = 'Times New Roman'
-    Font.Style = []
-    ParentFont = False
-    Visible = False
-  end
   object Button2: TButton
     Left = 128
     Top = 136
@@ -109,19 +95,6 @@ object Atest_form: TAtest_form
     TabOrder = 0
     OnClick = Button2Click
   end
-  object StringGrid1: TStringGrid
-    Left = 32
-    Top = 200
-    Width = 256
-    Height = 257
-    ColCount = 2
-    DefaultRowHeight = 20
-    RowCount = 2
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
-    TabOrder = 1
-    Visible = False
-    OnKeyPress = StringGrid1KeyPress
-  end
   object Edit1: TEdit
     Left = 184
     Top = 8
@@ -134,7 +107,7 @@ object Atest_form: TAtest_form
     Font.Style = []
     MaxLength = 6
     ParentFont = False
-    TabOrder = 2
+    TabOrder = 1
     OnKeyPress = Edit1KeyPress
   end
   object Edit2: TEdit
@@ -149,7 +122,7 @@ object Atest_form: TAtest_form
     Font.Style = []
     MaxLength = 30
     ParentFont = False
-    TabOrder = 3
+    TabOrder = 2
   end
   object CheckBox1: TCheckBox
     Left = 184
@@ -162,7 +135,7 @@ object Atest_form: TAtest_form
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
-    TabOrder = 4
+    TabOrder = 3
   end
   object Edit5: TDateTimePicker
     Left = 184
@@ -171,7 +144,7 @@ object Atest_form: TAtest_form
     Height = 23
     Date = 0.663664791667542900
     Time = 0.663664791667542900
-    TabOrder = 5
+    TabOrder = 4
   end
   object Edit3: TEdit
     Left = 184
@@ -185,7 +158,7 @@ object Atest_form: TAtest_form
     Font.Style = []
     MaxLength = 4
     ParentFont = False
-    TabOrder = 6
+    TabOrder = 5
     OnKeyPress = Edit3KeyPress
   end
 end

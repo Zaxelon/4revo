@@ -4,11 +4,11 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Grids, DBGrids;
+  Dialogs, Grids, DBGrids, acDBGrid;
 
 type
   TAllTableForm = class(TForm)
-    DBGrid1: TDBGrid;
+    sDBGrid1: TsDBGrid;
   private
     { Private declarations }
   public

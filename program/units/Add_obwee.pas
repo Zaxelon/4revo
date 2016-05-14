@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls;
+  Dialogs, StdCtrls, ComCtrls, Mask, sMaskEdit, sCustomComboEdit, sToolEdit;
 
 type
   TAddObweeForm = class(TForm)

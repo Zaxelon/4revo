@@ -57,20 +57,6 @@ object SeeForm: TSeeForm
     ParentFont = False
     Visible = False
   end
-  object DBGrid1: TDBGrid
-    Left = 8
-    Top = 48
-    Width = 529
-    Height = 505
-    DataSource = CoNSQL.DataSource3
-    ReadOnly = True
-    TabOrder = 0
-    TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clWindowText
-    TitleFont.Height = -11
-    TitleFont.Name = 'MS Sans Serif'
-    TitleFont.Style = []
-  end
   object ComboBox1: TComboBox
     Left = 160
     Top = 0
@@ -78,7 +64,7 @@ object SeeForm: TSeeForm
     Height = 21
     Style = csDropDownList
     ItemHeight = 13
-    TabOrder = 1
+    TabOrder = 0
     OnChange = ComboBox1Change
   end
   object CheckBox1: TCheckBox
@@ -86,21 +72,8 @@ object SeeForm: TSeeForm
     Top = 4
     Width = 17
     Height = 17
-    TabOrder = 2
+    TabOrder = 1
     OnClick = CheckBox1Click
-  end
-  object SpinEdit1: TSpinEdit
-    Left = 160
-    Top = 24
-    Width = 57
-    Height = 22
-    MaxValue = 100
-    MinValue = 0
-    ReadOnly = True
-    TabOrder = 3
-    Value = 0
-    Visible = False
-    OnChange = SpinEdit1Change
   end
   object Button1: TButton
     Left = 320
@@ -108,8 +81,48 @@ object SeeForm: TSeeForm
     Width = 75
     Height = 20
     Caption = 'PRINT'
-    TabOrder = 4
+    TabOrder = 2
     OnClick = Button1Click
+  end
+  object DBGrid1: TsDBGrid
+    Left = 8
+    Top = 48
+    Width = 529
+    Height = 505
+    Color = clWhite
+    DataSource = CoNSQL.DataSource3
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 3
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
+  end
+  object SpinEdit1: TsSpinEdit
+    Left = 160
+    Top = 24
+    Width = 57
+    Height = 21
+    Color = clWhite
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 4
+    Text = '0'
+    MaxValue = 0
+    MinValue = 0
+    Value = 0
   end
   object MainMenu1: TMainMenu
     object N1: TMenuItem

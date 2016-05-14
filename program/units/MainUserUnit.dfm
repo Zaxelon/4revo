@@ -32,29 +32,34 @@ object MainUserForm: TMainUserForm
     ParentFont = False
     Visible = False
   end
-  object DBGrid1: TDBGrid
-    Left = 0
-    Top = 24
-    Width = 785
-    Height = 521
-    DataSource = CoNSQL.DataSource2
-    TabOrder = 0
-    TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clWindowText
-    TitleFont.Height = -11
-    TitleFont.Name = 'MS Sans Serif'
-    TitleFont.Style = []
-    OnKeyDown = DBGrid1KeyDown
-    OnTitleClick = DBGrid1TitleClick
-  end
   object Edit1: TEdit
     Left = 112
     Top = 0
     Width = 121
     Height = 21
-    TabOrder = 1
+    TabOrder = 0
     Visible = False
     OnChange = Edit1Change
+  end
+  object DBGrid1: TsDBGrid
+    Left = 0
+    Top = 24
+    Width = 785
+    Height = 521
+    Color = clWhite
+    DataSource = CoNSQL.DataSource2
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'MS Sans Serif'
+    TitleFont.Style = []
   end
   object MainMenu1: TMainMenu
     object RapidZ1: TMenuItem

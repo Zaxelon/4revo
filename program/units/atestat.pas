@@ -9,7 +9,6 @@ uses
 type
   TAtest_form = class(TForm)
     Button2: TButton;
-    StringGrid1: TStringGrid;
     Label1: TLabel;
     Label2: TLabel;
     Edit1: TEdit;
@@ -19,7 +18,6 @@ type
     Label5: TLabel;
     Label4: TLabel;
     Edit5: TDateTimePicker;
-    Label6: TLabel;
     Edit3: TEdit;
     procedure Button2Click(Sender: TObject);
     procedure Edit1KeyPress(Sender: TObject; var Key: Char);

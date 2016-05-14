@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Menus, Grids, DBGrids;
+  Dialogs, StdCtrls, Menus, Grids, DBGrids, acDBGrid;
 
 type
   TMainUserForm = class(TForm)
@@ -26,7 +26,6 @@ type
     N40: TMenuItem;
     N41: TMenuItem;
     Nstar_admin: TMenuItem;
-    DBGrid1: TDBGrid;
     Edit1: TEdit;
     Label2: TLabel;
     N4: TMenuItem;
@@ -37,6 +36,7 @@ type
     N10: TMenuItem;
     Ndoc: TMenuItem;
     Nspec: TMenuItem;
+    DBGrid1: TsDBGrid;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
     procedure N2Click(Sender: TObject);
