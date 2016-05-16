@@ -36,11 +36,12 @@ type
     N10: TMenuItem;
     Ndoc: TMenuItem;
     Nspec: TMenuItem;
+    ComboBox1: TComboBox;
     DBGrid1: TsDBGrid;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
     procedure N2Click(Sender: TObject);
-    procedure DBGrid1KeyDown(Sender: TObject; var Key: Word;
+    procedure sDBGrid1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure Edit1Change(Sender: TObject);
     procedure N3Click(Sender: TObject);
@@ -63,6 +64,9 @@ type
     procedure N40Click(Sender: TObject);
     procedure N41Click(Sender: TObject);
     procedure N22Click(Sender: TObject);
+    procedure ComboBox1Change(Sender: TObject);
+    procedure DBGrid1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
   private
     see_abit_atest:byte;
   public
@@ -107,6 +111,10 @@ Begin
     CoNSQL.ADOQuery3.SQL.Text:='SELECT name_spec AS [Название], code_spec AS [Код],'+
     'places AS [Мест] FROM specialty';
     CoNSQL.ADOQuery3.Open;
+    DBGrid1.ReadOnly:=false;
+    DBGrid1.Columns[0].Width:=450;
+    DBGrid1.Columns[1].Width:=150;
+    DBGrid1.Columns[2].Width:=75;
   end;
   if (CoNSQL.UserRole='Admun') then
   Begin
@@ -226,7 +234,7 @@ begin
   addstudform.ShowModal;
 end;
 
-procedure TMainUserForm.DBGrid1KeyDown(Sender: TObject; var Key: Word;
+procedure TMainUserForm.sDBGrid1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if (key = 13) then
@@ -521,6 +529,7 @@ begin
   CoNSQL.MyRave.SetParam('DTOT4',CoNSQL.ADOQuery3.FieldByName('Отчество').AsString);
   CoNSQL.MyRave.SetParam('DTRJD',CoNSQL.ADOQuery3.FieldByName('День рождения').AsString);
   CoNSQL.MyRave.SetParam('DTADR',CoNSQL.ADOQuery3.FieldByName('Адрес').AsString);
+  CoNSQL.TempQuery.SQL.Clear;
   CoNSQL.TempQuery.SQL.Text:='SELECT series,numb,date_of_issue FROM pasport WHERE id_statement = :1';
   CoNSQL.TempQuery.Parameters.ParseSQL(CoNSQL.TempQuery.SQL.Text,true);
   CoNSQL.TempQuery.Parameters.ParamByName('1').Value:=temp_id;
@@ -528,6 +537,7 @@ begin
   CoNSQL.MyRave.SetParam('DTSER',CoNSQL.TempQuery.FieldByName('series').AsString);
   CoNSQL.MyRave.SetParam('DTNUM',CoNSQL.TempQuery.FieldByName('numb').AsString);
   CoNSQL.MyRave.SetParam('DTDVI',CoNSQL.TempQuery.FieldByName('date_of_issue').AsString);
+  CoNSQL.TempQuery.SQL.Clear;
   CoNSQL.TempQuery.SQL.Text:='SELECT phone FROM abiture WHERE id_statement = :1';
   CoNSQL.TempQuery.Parameters.ParseSQL(CoNSQL.TempQuery.SQL.Text,true);
   CoNSQL.TempQuery.Parameters.ParamByName('1').Value:=temp_id;
@@ -702,6 +712,9 @@ begin
   CoNSQL.ADOQuery3.SQL.Text:='SELECT name_spec AS [Название], code_spec AS [Код],'+
   'places AS [Мест] FROM specialty';
   CoNSQL.ADOQuery3.Open;
+  DBGrid1.Columns[0].Width:=450;
+  DBGrid1.Columns[1].Width:=150;
+  DBGrid1.Columns[2].Width:=75;
 end;
 
 procedure TMainUserForm.N40Click(Sender: TObject);
@@ -747,6 +760,50 @@ begin
     StatistForm.DBGrid1.Columns[4].Width:=90;
   end;
   StatistForm.showmodal;
+end;
+
+procedure TMainUserForm.ComboBox1Change(Sender: TObject);
+begin
+  CoNSQL.SkinIsRough.SkinName:=ComBobox1.Items[ComBobox1.ItemIndex];
+  IniFile.WriteInteger('Design','SkinID',ComBobox1.ItemIndex);
+  IniFile.WriteInteger('StyleID',CoNSQL.UserName,ComBobox1.ItemIndex);
+end;
+
+procedure TMainUserForm.DBGrid1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (key = 13) then
+  Begin
+    CoNSQL.ADOQuery3.Edit;
+    CoNSQL.ADOQuery3.Post;
+  end;
+  if (key = 46) and (ssShift in shift) then
+  Begin
+    if not(CoNSQL.ADOQuery3.IsEmpty) then
+    Begin
+      if  CoNSQL.UserRole = 'Admun' then
+      Begin
+        with CoNSQL do
+        Begin
+          if CoNSQL.UserName <> trim(adoquery3.Fields.Fields[0].asstring) then
+          Begin
+            ADOQuery4.SQL.Clear;
+            ADOQuery4.SQL.Text:='exec drop_users :1';
+            ADOQuery4.Parameters.ParseSQL(ADOQuery4.SQL.Text,true);
+            ADOQuery4.Parameters.ParamByName('1').Value:=trim(adoquery3.Fields.Fields[0].asstring);
+            ADOQuery4.ExecSQL;
+            ADOQuery3.Active:=false;
+            ADOQuery3.Active:=true;
+          end else showmessage('Access denied');
+        end;
+      end else
+      try
+      CoNSQL.ADOQuery3.Delete;
+      except
+      showmessage('Вы не можете выполнить это удаление не нарушив целостности БД!');
+      end;
+    End;
+  end;
 end;
 
 end.

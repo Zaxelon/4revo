@@ -75,7 +75,7 @@ id_statement int NOT NULL,
 numb_doc int NOT NULL,
 PRIMARY KEY (id_dc),
 FOREIGN KEY (id_statement) REFERENCES abiture(id_statement) ON DELETE CASCADE ON UPDATE CASCADE, 
-FOREIGN KEY (numb_doc) REFERENCES document(numb_doc) ON UPDATE CASCADE
+FOREIGN KEY (numb_doc) REFERENCES document(numb_doc) ON DELETE CASCADE ON UPDATE CASCADE
 );
 GO
 CREATE TABLE pasp_rod (

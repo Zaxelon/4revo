@@ -49,7 +49,6 @@ begin
   CoNSQL.adoquery2.SQL.add('SELECT name_spec AS VGA FROM specialty');
   CoNSQL.adoquery2.open;
   ComboBox1.Clear;
-  ComboBox1.Items.Add('');
   while not(CoNSQL.adoquery2.Eof) and (CoNSQL.adoquery2.RecordCount>0) do
   Begin
     ComboBox1.Items.Add(CoNSQL.adoquery2.fieldbyname('VGA').asstring);

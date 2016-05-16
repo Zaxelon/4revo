@@ -1,10 +1,10 @@
 object MainUserForm: TMainUserForm
-  Left = 215
-  Top = 278
+  Left = 931
+  Top = 261
   BorderStyle = bsSingle
   Caption = 'RapidZ'
   ClientHeight = 542
-  ClientWidth = 784
+  ClientWidth = 787
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,7 +20,7 @@ object MainUserForm: TMainUserForm
   TextHeight = 13
   object Label2: TLabel
     Left = 7
-    Top = 0
+    Top = -1
     Width = 91
     Height = 24
     Caption = #1060#1072#1084#1080#1083#1080#1103' :'
@@ -41,11 +41,28 @@ object MainUserForm: TMainUserForm
     Visible = False
     OnChange = Edit1Change
   end
+  object ComboBox1: TComboBox
+    Left = 632
+    Top = 0
+    Width = 145
+    Height = 22
+    Style = csOwnerDrawFixed
+    ItemHeight = 16
+    ItemIndex = 0
+    TabOrder = 1
+    Text = 'Ubuntu'
+    OnChange = ComboBox1Change
+    Items.Strings = (
+      'Ubuntu'
+      'Dark'
+      'Steam (beta)'
+      'IRSoul')
+  end
   object DBGrid1: TsDBGrid
-    Left = 0
-    Top = 24
+    Left = 1
+    Top = 32
     Width = 785
-    Height = 521
+    Height = 505
     Color = clWhite
     DataSource = CoNSQL.DataSource2
     Font.Charset = DEFAULT_CHARSET
@@ -54,12 +71,13 @@ object MainUserForm: TMainUserForm
     Font.Name = 'MS Sans Serif'
     Font.Style = []
     ParentFont = False
-    TabOrder = 1
+    TabOrder = 2
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -11
     TitleFont.Name = 'MS Sans Serif'
     TitleFont.Style = []
+    OnKeyDown = DBGrid1KeyDown
   end
   object MainMenu1: TMainMenu
     object RapidZ1: TMenuItem

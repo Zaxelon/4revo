@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons;
+  Dialogs, StdCtrls, Buttons, inifiles;
 
 type
   TAuthForm = class(TForm)
@@ -15,14 +15,15 @@ type
     Button1: TButton;
     Label3: TLabel;
     ComboBox1: TComboBox;
+    SpeedButton1: TSpeedButton;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure FormPaint(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Edit1KeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure ComboBox1Exit(Sender: TObject);
 
   private
     { Private declarations }
@@ -42,13 +43,8 @@ begin
   application.Terminate;
 end;
 
-procedure TAuthForm.FormPaint(Sender: TObject);
-var deathwing:cardinal;
-Begin
-  
-end;
-
 procedure TAuthForm.Button1Click(Sender: TObject);
+var tmp:integer;
 begin
 MainUserForm.Npravka.Visible:=false;
 MainUserForm.Nsee.Visible:=false;
@@ -106,6 +102,13 @@ Label3.Caption:='';
           end;
         end;
       end;
+      IniFile.WriteString('Auth','UserLogin',Edit1.Text);
+      tmp:=IniFile.ReadInteger('StyleID',CoNSQL.UserName,0);
+      if (tmp < 0) or (tmp >= MainUserForm.ComBobox1.Items.Count) then tmp:=0;
+      MainUserForm.ComBobox1.ItemIndex:=tmp;
+      CoNSQL.SkinIsRough.SkinName:=MainUserForm.ComBobox1.Items[MainUserForm.ComBobox1.ItemIndex];
+      MainUserForm.ComboBox1Change(self);
+      Edit2.Text:='';
       AuthForm.Hide;
       MainUserForm.Show;
     end;
@@ -120,19 +123,31 @@ end;
 procedure TAuthForm.FormCreate(Sender: TObject);
 var deathwing:cardinal;
 Begin
+  IniFile:=TIniFile.Create('./Config.ini');
+  combobox1.Items.Add(IniFile.ReadString('DataBase','IPDef','127.0.0.1'));
   GetSQLServerNames(combobox1.Items,'',deathwing);
-  if (combobox1.Items.Count = 0) then combobox1.Items.Add('YNIKIT\SQLEXPRESS');
   combobox1.ItemIndex:=0;
 end;
 
 procedure TAuthForm.FormShow(Sender: TObject);
+var tmp:integer;
 begin
   Consql.ADOConnection1.Connected:=false;
+  Edit1.Text:=IniFile.ReadString('Auth','UserLogin','');
+  tmp:=IniFile.ReadInteger('Design','SkinID',0);
+  if (tmp < 0) or (tmp >= MainUserForm.ComBobox1.Items.Count) then tmp:=0;
+  MainUserForm.ComBobox1.ItemIndex:=tmp;
+  CoNSQL.SkinIsRough.SkinName:=MainUserForm.ComBobox1.Items[MainUserForm.ComBobox1.ItemIndex];
 end;
 
-procedure TAuthForm.Button2Click(Sender: TObject);
+procedure TAuthForm.SpeedButton1Click(Sender: TObject);
 begin
-  MainUserForm.Show;
+  IniFile.WriteString('DataBase','IPDef',Combobox1.Text);
+end;
+
+procedure TAuthForm.ComboBox1Exit(Sender: TObject);
+begin
+  Combobox1.TabStop:=false;
 end;
 
 end.

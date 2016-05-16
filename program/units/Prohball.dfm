@@ -83,8 +83,8 @@ object ProhForm: TProhForm
     Left = 208
     Top = 8
     Width = 145
-    Height = 21
-    Style = csDropDownList
+    Height = 19
+    Style = csOwnerDrawFixed
     ItemHeight = 13
     TabOrder = 0
     OnChange = ComboBox1Change

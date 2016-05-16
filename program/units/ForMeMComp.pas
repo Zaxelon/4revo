@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Classes, ADODB, DB, RpCon, RpDefine, RpRave, RpConDS, RpRender,
-  RpRenderCanvas, RpRenderPreview, sSkinManager, RpBase, RpSystem;
+  RpRenderCanvas, RpRenderPreview, sSkinManager, RpBase, RpSystem, inifiles;
 
 type
   TCoNSQL = class(TDataModule)
@@ -33,6 +33,7 @@ type
 
 var
   CoNSQL: TCoNSQL;
+  IniFile : TIniFile;
 implementation
 
 {$R *.dfm}
