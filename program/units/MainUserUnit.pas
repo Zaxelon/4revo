@@ -93,6 +93,7 @@ end;
 
 procedure TMainUserForm.FormShow(Sender: TObject);
 Begin
+try
   DBGrid1.ReadOnly:=true;
   if (CoNSQL.UserRole='Secretar') then
   Begin
@@ -122,10 +123,15 @@ Begin
     CoNSQL.ADOQuery3.Open;
     DBGrid1.ReadOnly:=false;
   end;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.N2Click(Sender: TObject);
 begin
+try
   uwpdate:=false;
   with addstudform do
   Begin
@@ -232,11 +238,16 @@ begin
   end;
 
   addstudform.ShowModal;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.sDBGrid1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
+try
   if (key = 13) then
   Begin
     CoNSQL.ADOQuery3.Edit;
@@ -265,10 +276,15 @@ begin
       CoNSQL.ADOQuery3.Delete;
     End;
   end;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.Edit1Change(Sender: TObject);
 begin
+try
   if Edit1.Text<>'' then
   Begin
     CoNSQL.ADOQuery3.SQL.Text:='exec sel_title :1';
@@ -292,10 +308,15 @@ begin
     DBGrid1.Columns[3].Width:=100;
     DBGrid1.Columns[6].Width:=275;
   End;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.N3Click(Sender: TObject);
 begin
+try
   CoNSQL.ADOQuery1.SQL.Text:='SELECT surname,first_name,middle_name,is_male,'+
   'CONVERT(varchar(30), birthday, 104) AS [DDate],phone,address,training_courses FROM abiture WHERE id_statement=:1';
   CoNSQL.ADOQuery1.Parameters.ParseSQL(CoNSQL.ADOQuery1.SQL.Text,true);
@@ -473,17 +494,27 @@ begin
     edit2.Text:=CoNSQL.ADOQuery1.FieldByName('document_number').AsString;
   end;
   addstudform.ShowModal;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.DBGrid1TitleClick(Column: TColumn);
 begin
+try
   if CoNSQL.ADOQuery3.Sort <> ('['+ Column.FieldName + '] ASC') then
   CoNSQL.ADOQuery3.Sort:= '['+ Column.FieldName + '] ASC' else
-  CoNSQL.ADOQuery3.Sort:= '['+ Column.FieldName + '] DESC'
+  CoNSQL.ADOQuery3.Sort:= '['+ Column.FieldName + '] DESC';
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.N9Click(Sender: TObject);
 begin
+try
   see_abit_atest:=1;
   CoNSQL.ADOQuery4.SQL.Text:='exec sel_avg_atest NULL,:2';
   SeeForm.DBGrid1.Visible:=true;
@@ -504,6 +535,10 @@ begin
     SeeForm.DBGrid1.Columns[4].Title.caption:='Балл';
   end else DBGrid1.Visible:=false;
   SeeForm.showmodal;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.N4Click(Sender: TObject);
@@ -523,6 +558,7 @@ end;
 procedure TMainUserForm.N27Click(Sender: TObject);
 var temp_id:integer;
 begin
+try
   temp_id:=CoNSQL.ADOQuery3.FieldByName('ID').AsInteger;
   CoNSQL.MyRave.SetParam('DTFAM',CoNSQL.ADOQuery3.FieldByName('Фамилия').AsString);
   CoNSQL.MyRave.SetParam('DTNAM',CoNSQL.ADOQuery3.FieldByName('Имя').AsString);
@@ -574,11 +610,16 @@ begin
   CoNSQL.MyRave.Close;
   CoNSQL.MyRave.ProjectFile:='.\ravki\Za9vl.rav';
   CoNSQL.MyRave.Execute;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.N28Click(Sender: TObject);
 var temp_id:integer; temp_s:string;
 begin
+try
   CoNSQL.MyRave.SetParam('DTDAT',datetostr(Date));
   temp_s:='"'+CoNSQL.ADOQuery3.FieldByName('Фамилия').AsString+' '+
   CoNSQL.ADOQuery3.FieldByName('Имя').AsString+' '+
@@ -593,10 +634,15 @@ begin
   CoNSQL.MyRave.Close;
   CoNSQL.MyRave.ProjectFile:='.\ravki\rasp.rav';
   CoNSQL.MyRave.Execute;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.N24Click(Sender: TObject);
 begin
+try
   CoNSQL.TempQuery.SQL.Text:='SELECT COUNT(*) FROM abiture WHERE training_courses = 1';
   CoNSQL.TempQuery.Open;
   StatistForm.Label3.Caption:=CoNSQL.TempQuery.Fields.Fields[0].AsString;
@@ -615,17 +661,27 @@ begin
     StatistForm.DBGrid1.Columns[3].Width:=85;
   end;
   StatistForm.showmodal;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.N25Click(Sender: TObject);
 begin
+try
   CoNSQL.ADOQuery4.SQL.Text:='exec sel_count_benf';
   CoNSQL.ADOQuery4.Open;
   showmessage('Количество студентов имеющих льготы : ' + CoNSQL.ADOQuery4.Fields.Fields[0].AsString);
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.N12Click(Sender: TObject);
 begin
+try
   see_abit_atest:=1;
   CoNSQL.ADOQuery4.SQL.Text:='exec prowedwie NULL,NULL,0';
   CoNSQL.ADOQuery4.Open;
@@ -635,10 +691,15 @@ begin
   SeeForm.N1.Visible:=true;
   SeeForm.ShowModal;
   SeeForm.SpinEdit1.Value:=0;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.N13Click(Sender: TObject);
 begin
+try
   see_abit_atest:=2;
   CoNSQL.ADOQuery4.SQL.Text:='exec polu_proh NULL,NULL,0';
   CoNSQL.ADOQuery4.Open;
@@ -648,10 +709,15 @@ begin
   SeeForm.N1.Visible:=true;
   SeeForm.ShowModal;
   SeeForm.SpinEdit1.Value:=0;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.N14Click(Sender: TObject);
 begin
+try
   see_abit_atest:=3;
   CoNSQL.ADOQuery4.SQL.Text:='exec ne_prowedwie NULL,NULL,0';
   CoNSQL.ADOQuery4.Open;
@@ -661,6 +727,10 @@ begin
   SeeForm.N1.Visible:=true;
   SeeForm.ShowModal;
   SeeForm.SpinEdit1.Value:=0;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 function TMainUserForm.show_your_atest: byte;
@@ -670,9 +740,14 @@ end;
 
 procedure TMainUserForm.N6Click(Sender: TObject);
 begin
+try
   CoNSQL.ADOQuery4.SQL.Text:='exec see_all_table';
   CoNSQL.ADOQuery4.Open;
   alltableform.showmodal;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.N1Click(Sender: TObject);
@@ -698,15 +773,21 @@ end;
 
 procedure TMainUserForm.NdocClick(Sender: TObject);
 begin
+try
   Nspec.Checked:=false;
   Ndoc.Checked:=true;
   CoNSQL.ADOQuery3.SQL.Text:='SELECT numb_doc AS [Номер], name AS [Название] '+
   'FROM document';
   CoNSQL.ADOQuery3.Open;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.NspecClick(Sender: TObject);
 begin
+try
   Nspec.Checked:=true;
   Ndoc.Checked:=false;
   CoNSQL.ADOQuery3.SQL.Text:='SELECT name_spec AS [Название], code_spec AS [Код],'+
@@ -715,6 +796,10 @@ begin
   DBGrid1.Columns[0].Width:=450;
   DBGrid1.Columns[1].Width:=150;
   DBGrid1.Columns[2].Width:=75;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.N40Click(Sender: TObject);
@@ -725,6 +810,7 @@ end;
 
 procedure TMainUserForm.N41Click(Sender: TObject);
 begin
+try
   if trim(CoNSQL.adoquery3.Fields.Fields[0].asstring) <> CoNSQL.UserName then
   Begin
 	  try
@@ -737,10 +823,15 @@ begin
 	  form4.Edit3.Text:='thisishesh';
 	  form4.ShowModal;
   end else showmessage('Access denied!');
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.N22Click(Sender: TObject);
 begin
+try
   CoNSQL.TempQuery.SQL.Text:='SELECT COUNT(*) FROM abiture WHERE training_courses = 1';
   CoNSQL.TempQuery.Open;
   StatistForm.Label3.Caption:=CoNSQL.TempQuery.Fields.Fields[0].AsString;
@@ -760,18 +851,28 @@ begin
     StatistForm.DBGrid1.Columns[4].Width:=90;
   end;
   StatistForm.showmodal;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.ComboBox1Change(Sender: TObject);
 begin
+try
   CoNSQL.SkinIsRough.SkinName:=ComBobox1.Items[ComBobox1.ItemIndex];
   IniFile.WriteInteger('Design','SkinID',ComBobox1.ItemIndex);
   IniFile.WriteInteger('StyleID',CoNSQL.UserName,ComBobox1.ItemIndex);
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure TMainUserForm.DBGrid1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
+try
   if (key = 13) then
   Begin
     CoNSQL.ADOQuery3.Edit;
@@ -804,6 +905,10 @@ begin
       end;
     End;
   end;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 end.

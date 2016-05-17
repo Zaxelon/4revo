@@ -98,7 +98,12 @@ begin
       CoNSQL.ADOQuery2.SQL.Text:='DELETE FROM abiture WHERE id_statement = :1';
       CoNSQL.ADOQuery2.Parameters.ParseSQL(CoNSQL.ADOQuery2.SQL.Text,true);
       CoNSQL.ADOQuery2.Parameters.ParamByName('1').Value:= abit_id;
-      CoNSQL.ADOQuery2.ExecSQL;
+      try
+        CoNSQL.ADOQuery2.ExecSQL;
+      except
+        on E: Exception do
+        Showmessage('ERRoR: ' + E.Message);
+      end;
     end;
     insert_obw;
     insert_pasp;
@@ -112,7 +117,12 @@ begin
     CoNSQL.ADOQuery3.SQL.Text:='exec sel_title :1';
     CoNSQL.ADOQuery3.Parameters.ParseSQL(CoNSQL.ADOQuery3.SQL.Text,true);
     CoNSQL.ADOQuery3.Parameters.ParamByName('1').Value:= '';
-    CoNSQL.ADOQuery3.Open;
+    try
+      CoNSQL.ADOQuery3.Open;
+    except
+      on E: Exception do
+      Showmessage('ERRoR: ' + E.Message);
+    end;
     if not(CoNSQL.ADOQuery3.IsEmpty) then
     Begin
       MainUserForm.DBGrid1.Columns[0].Width:=30;
@@ -140,6 +150,7 @@ end;
 
 procedure Taddstudform.insert_obw;
 begin
+try
   with CoNSQL do
   Begin
     ADOQuery2.SQL.text:=
@@ -164,10 +175,15 @@ begin
     abit_id:=ADOQuery2.Fields[0].AsInteger;
     ADOQuery2.SQL.Clear;
   end;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure Taddstudform.insert_pasp;
 begin
+try
   with CoNSQL do
   Begin
     ADOQuery2.SQL.text:=
@@ -186,10 +202,15 @@ begin
     ADOQuery2.ExecSQL;
     ADOQuery2.SQL.Clear;
   end;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure Taddstudform.insert_doc;
 begin
+try
   with Doc_form do
   Begin
     while (listbox1.Count>0) do
@@ -202,6 +223,10 @@ begin
       ListBox1.DeleteSelected;
     end;
   end;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure Taddstudform.Button6Click(Sender: TObject);
@@ -211,6 +236,7 @@ end;
 
 procedure Taddstudform.insert_pasp_rod;
 begin
+try
   with CoNSQL do
   Begin
     ADOQuery2.SQL.text:=
@@ -231,6 +257,10 @@ begin
     ADOQuery2.ExecSQL;
     ADOQuery2.SQL.Clear;
   end;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure Taddstudform.Button8Click(Sender: TObject);
@@ -242,6 +272,7 @@ procedure Taddstudform.insert_atest;
 var temp_s:string;
     zar:integer;
 begin
+try
   temp_s:=Atest_form.Edit3.Text;
   for zar:=0 to 4 do
   Begin if (temp_s[zar] = ',') then temp_s[zar]:='.'; end;
@@ -263,6 +294,10 @@ begin
     ADOQuery2.ExecSQL;
     ADOQuery2.SQL.Clear;
   end;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure Taddstudform.Button9Click(Sender: TObject);
@@ -274,6 +309,7 @@ procedure Taddstudform.insert_oge;
 var temp_s:string;
     zar:integer;
 begin
+try
   temp_s:=OGEG.Edit3.Text;
   for zar:=0 to 4 do
   Begin if(temp_s[zar] = ',') then temp_s[zar]:='.'; end;
@@ -292,6 +328,10 @@ begin
     ADOQuery2.ExecSQL;
     ADOQuery2.SQL.Clear;
   end;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure Taddstudform.Button7Click(Sender: TObject);
@@ -301,6 +341,7 @@ end;
 
 procedure Taddstudform.insert_priem;
 begin
+try
   with Priem_form do
   Begin
     with CoNSQL do
@@ -336,10 +377,15 @@ begin
       ADOQuery2.SQL.Clear;
     end;
   end;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure Taddstudform.insert_benfit;
 begin
+try
   with CoNSQL do
   Begin
     ADOQuery2.SQL.text:=
@@ -354,6 +400,10 @@ begin
     ADOQuery2.ExecSQL;
     ADOQuery2.SQL.Clear;
   end;
+except
+  on E: Exception do
+  Showmessage('ERRoR: ' + E.Message);
+end;
 end;
 
 procedure Taddstudform.Button10Click(Sender: TObject);

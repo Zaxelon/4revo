@@ -45,7 +45,11 @@ begin
   form4.Label4.Visible:=false;
   form4.Edit2.Visible:=false;
   CoNSQL.ADOQuery3.SQL.Text:='SELECT * FROM sel_user_deathwing';
-  CoNSQL.ADOQuery3.Open;
+  try
+    CoNSQL.ADOQuery3.Open;
+  except
+    showmessage('Ошибка при получении данных с сервера');
+  end;
 end;
 
 procedure TForm4.FormCloseQuery(Sender: TObject; var CanClose: Boolean);

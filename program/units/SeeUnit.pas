@@ -46,13 +46,17 @@ procedure TSeeForm.FormShow(Sender: TObject);
 begin
   checkbox1.Checked:=false;
   CoNSQL.adoquery2.SQL.Clear;
-  CoNSQL.adoquery2.SQL.add('SELECT name_spec AS VGA FROM specialty');
-  CoNSQL.adoquery2.open;
-  ComboBox1.Clear;
-  while not(CoNSQL.adoquery2.Eof) and (CoNSQL.adoquery2.RecordCount>0) do
-  Begin
-    ComboBox1.Items.Add(CoNSQL.adoquery2.fieldbyname('VGA').asstring);
-    CoNSQL.adoquery2.Next;
+  CoNSQL.adoquery2.SQL.text:='SELECT name_spec AS VGA FROM specialty';
+  try
+    CoNSQL.adoquery2.open;
+    ComboBox1.Clear;
+    while not(CoNSQL.adoquery2.Eof) and (CoNSQL.adoquery2.RecordCount>0) do
+    Begin
+      ComboBox1.Items.Add(CoNSQL.adoquery2.fieldbyname('VGA').asstring);
+      CoNSQL.adoquery2.Next;
+    end;
+  except
+    showmessage('Ошибка при получении данных с сервера');
   end;
   CoNSQL.ADOQuery2.SQL.Clear;
 end;
@@ -80,7 +84,11 @@ begin
   if (Combobox1.Text = '') and (SpinEdit1.Visible) then
   Begin
     CoNSQL.ADOQuery4.SQL.Text:='exec prowedwie NULL,NULL,0';
-    CoNSQL.ADOQuery4.Open;
+    try
+      CoNSQL.ADOQuery4.Open;
+    except
+      showmessage('Ошибка при получении данных с сервера');
+    end;
     SpinEdit1.Value:=0;
   end else
   if MainUserForm.show_your_atest = 3 then
@@ -89,7 +97,11 @@ begin
       CoNSQL.TempQuery.SQL.Text:='select TOP 1 places from specialty WHERE name_spec = :1';
       CoNSQL.TempQuery.Parameters.ParseSQL(CoNSQL.TempQuery.SQL.Text,true);
       CoNSQL.TempQuery.Parameters.ParamByName('1').Value:= ComboBox1.text;
-      CoNSQL.TempQuery.Open;
+      try
+        CoNSQL.TempQuery.Open;
+      except
+        showmessage('Ошибка при получении данных с сервера');
+      end;
       SpinEdit1.Value:=CoNSQL.TempQuery.Fields.Fields[0].AsInteger;
       CoNSQL.ADOQuery4.SQL.Text:='exec ne_prowedwie :1,:2,:3';
       CoNSQL.ADOQuery4.Parameters.ParamByName('1').Value:= ComboBox1.text;
@@ -103,7 +115,11 @@ begin
       CoNSQL.TempQuery.SQL.Text:='select TOP 1 places from specialty WHERE name_spec = :1';
       CoNSQL.TempQuery.Parameters.ParseSQL(CoNSQL.TempQuery.SQL.Text,true);
       CoNSQL.TempQuery.Parameters.ParamByName('1').Value:= ComboBox1.text;
-      CoNSQL.TempQuery.Open;
+      try
+        CoNSQL.TempQuery.Open;
+      except
+        showmessage('Ошибка при получении данных с сервера');
+      end;
       SpinEdit1.Value:=CoNSQL.TempQuery.Fields.Fields[0].AsInteger;
       CoNSQL.ADOQuery4.SQL.Text:='exec polu_proh :1,:2,:3';
       CoNSQL.ADOQuery4.Parameters.ParseSQL(CoNSQL.ADOQuery4.SQL.Text,true);
@@ -127,7 +143,11 @@ begin
       CoNSQL.TempQuery.SQL.Text:='select TOP 1 places from specialty WHERE name_spec = :1';
       CoNSQL.TempQuery.Parameters.ParseSQL(CoNSQL.TempQuery.SQL.Text,true);
       CoNSQL.TempQuery.Parameters.ParamByName('1').Value:= ComboBox1.text;
-      CoNSQL.TempQuery.Open;
+      try
+        CoNSQL.TempQuery.Open;
+      except
+        showmessage('Ошибка при получении данных с сервера');
+      end;
       SpinEdit1.Value:=CoNSQL.TempQuery.Fields.Fields[0].AsInteger;
       CoNSQL.ADOQuery4.SQL.Text:='exec prowedwie :1,:2,:3';
       CoNSQL.ADOQuery4.Parameters.ParseSQL(CoNSQL.ADOQuery4.SQL.Text,true);
@@ -136,7 +156,11 @@ begin
       CoNSQL.ADOQuery4.Parameters.ParamByName('3').Value:= SpinEdit1.Value;
     end;
   end;
-  CoNSQL.ADOQuery4.Open;
+  try
+    CoNSQL.ADOQuery4.Open;
+  except
+    showmessage('Ошибка при получении данных с сервера');
+  end;
   if not(CoNSQL.ADOQuery4.IsEmpty) then
   Begin
     DBGrid1.Columns[0].Width:=30;

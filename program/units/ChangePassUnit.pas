@@ -43,7 +43,11 @@ procedure TChangePassForm.Button1Click(Sender: TObject);
 begin
   CoNSQL.CheckRole.SQL.Text:='ALTER LOGIN '+Label4.Caption+' WITH PASSWORD = N'+#39+
   Edit3.Text+#39+' OLD_PASSWORD = N'+#39+Edit2.Text+#39;
+  try
   CoNSQL.CheckRole.ExecSQL;
+  except
+    showmessage('Не удалось сменить пароль.');
+  end;
   close;
 end;
 

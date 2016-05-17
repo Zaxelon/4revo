@@ -41,12 +41,16 @@ begin
   Label5.Caption:='';
   CoNSQL.adoquery2.SQL.Clear;
   CoNSQL.adoquery2.SQL.add('SELECT name_spec AS VGA FROM specialty');
-  CoNSQL.adoquery2.open;
-  ComboBox1.Clear;
-  while not(CoNSQL.adoquery2.Eof) and (CoNSQL.adoquery2.RecordCount>0) do
-  Begin
-    ComboBox1.Items.Add(CoNSQL.adoquery2.fieldbyname('VGA').asstring);
-    CoNSQL.adoquery2.Next;
+  try
+    CoNSQL.adoquery2.open;
+    ComboBox1.Clear;
+    while not(CoNSQL.adoquery2.Eof) and (CoNSQL.adoquery2.RecordCount>0) do
+    Begin
+      ComboBox1.Items.Add(CoNSQL.adoquery2.fieldbyname('VGA').asstring);
+      CoNSQL.adoquery2.Next;
+    end;
+  except
+    showmessage('Ошибка при получении данных с сервера');
   end;
 end;
 
@@ -59,10 +63,14 @@ begin
     CoNSQL.ADOQuery4.Parameters.ParamByName('1').Value:= ComboBox1.text;
     CoNSQL.ADOQuery4.Parameters.ParamByName('2').Value:= prior;
     CoNSQL.ADOQuery4.Parameters.ParamByName('3').Value:= SpinEdit1.Value;
-    CoNSQL.ADOQuery4.Open;
-    if (CoNSQL.ADOQuery4.FieldByName('APoL').AsString = 'FALSE') then
-    Label5.Caption:='Нет' else
-    Label5.Caption:=CoNSQL.ADOQuery4.FieldByName('APoL').AsString
+    try
+      CoNSQL.ADOQuery4.Open;
+      if (CoNSQL.ADOQuery4.FieldByName('APoL').AsString = 'FALSE') then
+      Label5.Caption:='Нет' else
+      Label5.Caption:=CoNSQL.ADOQuery4.FieldByName('APoL').AsString;
+    except
+      showmessage('Ошибка при получении данных с сервера');
+    end;
 end;
 
 procedure TProhForm.ComboBox1Change(Sender: TObject);
@@ -70,8 +78,12 @@ begin
   CoNSQL.TempQuery.SQL.Text:='select TOP 1 places from specialty WHERE name_spec = :1';
   CoNSQL.TempQuery.Parameters.ParseSQL(CoNSQL.TempQuery.SQL.Text,true);
   CoNSQL.TempQuery.Parameters.ParamByName('1').Value:= ComboBox1.text;
-  CoNSQL.TempQuery.Open;
-  SpinEdit1.Value:=CoNSQL.TempQuery.Fields.Fields[0].AsInteger;
+  try
+    CoNSQL.TempQuery.Open;
+    SpinEdit1.Value:=CoNSQL.TempQuery.Fields.Fields[0].AsInteger;
+  except
+    showmessage('Ошибка при получении данных с сервера');
+  end;
 end;
 
 end.

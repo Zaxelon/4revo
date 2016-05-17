@@ -39,10 +39,18 @@ begin
   if Checkbox1.Checked then
   CoNSQL.ADOQuery4.Parameters.ParamByName('1').Value:=1 else
   CoNSQL.ADOQuery4.Parameters.ParamByName('1').Value:=0;
-  CoNSQL.ADOQuery4.ExecSQL;
+  try
+    CoNSQL.ADOQuery4.ExecSQL;
+  except
+    showmessage('Ошибка при получении данных с сервера');
+  end;
   CoNSQL.ADOQuery4.SQL.Text:='SELECT name_spec AS [Специальность], places AS [Мест],'+
   ' prowed AS [Прошедшие], ne_prowed AS [Не прошедшие],proh_ball AS [Проходной балл] FROM abit_prow';
-  CoNSQL.ADOQuery4.Open;
+  try
+    CoNSQL.ADOQuery4.Open;
+  except
+    showmessage('Ошибка при получении данных с сервера');
+  end;
   if not(CoNSQL.ADOQuery4.IsEmpty) then
   Begin
     StatistForm.DBGrid1.Columns[0].Width:=325;
