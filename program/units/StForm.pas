@@ -6,6 +6,16 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, Grids, DBGrids, StdCtrls, acDBGrid;
 
+{****t* TStatistForm/TStatistForm
+* NAME
+* TStatistForm
+* USAGE
+* Форма мTSeeForm
+* SYNOPSIS
+*  TStatistForm = class(TForm)
+* EXAMPLE
+*  StatistForm: TStatistForm;
+****}
 type
   TStatistForm = class(TForm)
     Button1: TButton;
@@ -32,6 +42,16 @@ uses ForMeMComp;
 
 {$R *.dfm}
 
+{****p* TStatistForm/Button1Click
+* NAME
+* TStatistForm.Button1Click
+* USAGE
+* Генерация статистики4
+* SYNOPSIS
+*  TStatistForm.Button1Click(Sender: TObject);
+* EXAMPLE
+*  Button1Click(self);
+ ****}
 procedure TStatistForm.Button1Click(Sender: TObject);
 begin
   CoNSQL.ADOQuery4.SQL.Text:='exec gen_all_prow :1';

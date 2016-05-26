@@ -6,6 +6,16 @@ uses
   SysUtils, Classes, ADODB, DB, RpCon, RpDefine, RpRave, RpConDS, RpRender,
   RpRenderCanvas, RpRenderPreview, sSkinManager, RpBase, RpSystem, inifiles;
 
+{****t* TCoNSQL/TCoNSQL
+* NAME
+* TCoNSQL
+* USAGE
+* Форма данных TCoNSQL
+* SYNOPSIS
+*  TCoNSQL = class(TForm)
+* EXAMPLE
+*  CoNSQL: TCoNSQL
+****}
 type
   TCoNSQL = class(TDataModule)
     ADOConnection1: TADOConnection;
@@ -38,6 +48,16 @@ implementation
 
 {$R *.dfm}
 
+{****p* TCoNSQL/ADOQuery3BeforeInsert
+* NAME
+* TCoNSQL.ADOQuery3BeforeInsert
+* USAGE
+* Обработка вставки в БД
+* SYNOPSIS
+*  TCoNSQL.ADOQuery3BeforeInsert(DataSet: TDataSet);
+* EXAMPLE
+*  ADOQuery3BeforeInsert(DataSet1);
+ ****}
 procedure TCoNSQL.ADOQuery3BeforeInsert(DataSet: TDataSet);
 begin
   if CoNSQL.UserRole = 'Star_Secretar' then

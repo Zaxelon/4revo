@@ -6,6 +6,16 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Menus, Grids, DBGrids, acDBGrid;
 
+{****t* TMainUserForm/TMainUserForm
+* NAME
+* TMainUserForm
+* USAGE
+* Форма TMainUserForm
+* SYNOPSIS
+*  TMainUserForm = class(TForm)
+* EXAMPLE
+*  MainUserForm: TMainUserForm
+****}
 type
   TMainUserForm = class(TForm)
     MainMenu1: TMainMenu;
@@ -86,11 +96,31 @@ uses ForMeMComp, Add_obwee, AuthUnit, add_abiture, pasport, Doc_unit,
   pasp_rod, Priem, SeeUnit, Prohball, StForm, ATableForm, ChangePassUnit, UserUnit,
   OGE, Lgot, atestat;
 
+{****p* TMainUserForm/FormCloseQuery
+* NAME
+* TMainUserForm.FormCloseQuery
+* USAGE
+* Закрыть приложение
+* SYNOPSIS
+*  TMainUserForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+* EXAMPLE
+*  FormCloseQuery(self,true);
+ ****}
 procedure TMainUserForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   application.Terminate;
 end;
 
+{****p* TMainUserForm/FormShow
+* NAME
+* TMainUserForm.FormShow
+* USAGE
+* Обработка отображения TMainUserForm
+* SYNOPSIS
+*  TMainUserForm.FormShow(Sender: TObject);
+* EXAMPLE
+*  FormShow(self);
+ ****}
 procedure TMainUserForm.FormShow(Sender: TObject);
 Begin
 try
@@ -129,6 +159,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/N2Click
+* NAME
+* TMainUserForm.N2Click
+* USAGE
+* Обработка добавления абитуриента
+* SYNOPSIS
+*  TMainUserForm.N2Click(Sender: TObject);
+* EXAMPLE
+*  N2Click(self);
+ ****}
 procedure TMainUserForm.N2Click(Sender: TObject);
 begin
 try
@@ -244,6 +284,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/sDBGrid1KeyDown
+* NAME
+* TMainUserForm.sDBGrid1KeyDown
+* USAGE
+* Обработка удаления
+* SYNOPSIS
+*  TMainUserForm.sDBGrid1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+* EXAMPLE
+*  sDBGrid1KeyDown(self,44,ssShift);
+ ****}
 procedure TMainUserForm.sDBGrid1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
@@ -282,6 +332,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/Edit1Change
+* NAME
+* TMainUserForm.Edit1Change
+* USAGE
+* Обработка изменения Edit1
+* SYNOPSIS
+*  TMainUserForm.Edit1Change(Sender: TObject);
+* EXAMPLE
+*  Edit1Change(self);
+ ****}
 procedure TMainUserForm.Edit1Change(Sender: TObject);
 begin
 try
@@ -314,6 +374,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/N3Click
+* NAME
+* TMainUserForm.N3Click
+* USAGE
+* Обработка редактирования абитуриента
+* SYNOPSIS
+*  TMainUserForm.N3Click(Sender: TObject);
+* EXAMPLE
+*  N3Click(self);
+ ****}
 procedure TMainUserForm.N3Click(Sender: TObject);
 begin
 try
@@ -500,6 +570,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/DBGrid1TitleClick
+* NAME
+* TMainUserForm.DBGrid1TitleClick
+* USAGE
+* Сортировка таблицы
+* SYNOPSIS
+*  TMainUserForm.DBGrid1TitleClick(Column: TColumn);
+* EXAMPLE
+*  DBGrid1TitleClick(col);
+ ****}
 procedure TMainUserForm.DBGrid1TitleClick(Column: TColumn);
 begin
 try
@@ -512,6 +592,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/N9Click
+* NAME
+* TMainUserForm.N9Click
+* USAGE
+* Выборка по среднему баллу аттестату
+* SYNOPSIS
+*  TMainUserForm.N9Click(Sender: TObject);
+* EXAMPLE
+*  N9Click(self);
+ ****}
 procedure TMainUserForm.N9Click(Sender: TObject);
 begin
 try
@@ -541,20 +631,35 @@ except
 end;
 end;
 
+{****p* TMainUserForm/N4Click
+* NAME
+* TMainUserForm.N4Click
+* USAGE
+* Отображние ProhForm
+* SYNOPSIS
+*  TMainUserForm.N4Click(Sender: TObject);
+* EXAMPLE
+*  N4Click(self);
+ ****}
 procedure TMainUserForm.N4Click(Sender: TObject);
 begin
   ProhForm.showmodal;
 end;
 
 procedure TMainUserForm.aborted;
-var msgb:word;
 begin
-  showmessage('В разработке');
-  msgb:=MessageBox(Handle,'Вы уверены что хотите продолжить?','Продолжить?',35);
-  if not(msgb=idyes) then
-  abort;
 end;
 
+{****p* TMainUserForm/N27Click
+* NAME
+* TMainUserForm.N27Click
+* USAGE
+* Генерация заявления
+* SYNOPSIS
+*  TMainUserForm.N27Click(Sender: TObject);
+* EXAMPLE
+*  N27Click(self);
+ ****}
 procedure TMainUserForm.N27Click(Sender: TObject);
 var temp_id:integer;
 begin
@@ -616,6 +721,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/N28Click
+* NAME
+* TMainUserForm.N28Click
+* USAGE
+* Генерация расписки
+* SYNOPSIS
+*  TMainUserForm.N28Click(Sender: TObject);
+* EXAMPLE
+*  N28Click(self);
+ ****}
 procedure TMainUserForm.N28Click(Sender: TObject);
 var temp_id:integer; temp_s:string;
 begin
@@ -640,6 +755,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/N24Click
+* NAME
+* TMainUserForm.N24Click
+* USAGE
+* Генерация статистики
+* SYNOPSIS
+*  TMainUserForm.N24Click(Sender: TObject);
+* EXAMPLE
+*  N24Click(self);
+ ****}
 procedure TMainUserForm.N24Click(Sender: TObject);
 begin
 try
@@ -667,6 +792,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/N25Click
+* NAME
+* TMainUserForm.N25Click
+* USAGE
+* Генерация статистики2
+* SYNOPSIS
+*  TMainUserForm.N25Click(Sender: TObject);
+* EXAMPLE
+*  N25Click(self);
+ ****}
 procedure TMainUserForm.N25Click(Sender: TObject);
 begin
 try
@@ -679,6 +814,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/N12Click
+* NAME
+* TMainUserForm.N12Click
+* USAGE
+* Выборка прошедших абитуриентов
+* SYNOPSIS
+*  TMainUserForm.N12Click(Sender: TObject);
+* EXAMPLE
+*  N12Click(self);
+ ****}
 procedure TMainUserForm.N12Click(Sender: TObject);
 begin
 try
@@ -697,6 +842,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/N13Click
+* NAME
+* TMainUserForm.N13Click
+* USAGE
+* Выборка набравших полупроходной балл абитуриентов
+* SYNOPSIS
+*  TMainUserForm.N13Click(Sender: TObject);
+* EXAMPLE
+*  N13Click(self);
+ ****}
 procedure TMainUserForm.N13Click(Sender: TObject);
 begin
 try
@@ -715,6 +870,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/N14Click
+* NAME
+* TMainUserForm.N14Click
+* USAGE
+* Выборка не прошедших абитуриентов
+* SYNOPSIS
+*  TMainUserForm.N14Click(Sender: TObject);
+* EXAMPLE
+*  N14Click(self);
+ ****}
 procedure TMainUserForm.N14Click(Sender: TObject);
 begin
 try
@@ -733,11 +898,31 @@ except
 end;
 end;
 
+{****p* TMainUserForm/show_your_atest
+* NAME
+* TMainUserForm.show_your_atest
+* USAGE
+* Изменение приватной переменной show_your_atest
+* SYNOPSIS
+*  TMainUserForm.show_your_atest: byte;
+* EXAMPLE
+*  show_your_atest;
+ ****}
 function TMainUserForm.show_your_atest: byte;
 begin
   show_your_atest:=see_abit_atest;
 end;
 
+{****p* TMainUserForm/N6Click
+* NAME
+* TMainUserForm.N6Click
+* USAGE
+* Выборка всех данных студентов
+* SYNOPSIS
+*  TMainUserForm.N6Click(Sender: TObject);
+* EXAMPLE
+*  N6Click(self);
+ ****}
 procedure TMainUserForm.N6Click(Sender: TObject);
 begin
 try
@@ -750,11 +935,31 @@ except
 end;
 end;
 
+{****p* TMainUserForm/N1Click
+* NAME
+* TMainUserForm.N1Click
+* USAGE
+* Выход из программы
+* SYNOPSIS
+*  TMainUserForm.N1Click(Sender: TObject);
+* EXAMPLE
+*  N1Click(self);
+ ****}
 procedure TMainUserForm.N1Click(Sender: TObject);
 begin
   halt;
 end;
 
+{****p* TMainUserForm/N5Click
+* NAME
+* TMainUserForm.N5Click
+* USAGE
+* Прервать соединения с БД
+* SYNOPSIS
+*  TMainUserForm.N5Click(Sender: TObject);
+* EXAMPLE
+*  N5Click(self);
+ ****}
 procedure TMainUserForm.N5Click(Sender: TObject);
 begin
   CoNSQL.ADOConnection1.Connected:=false;
@@ -762,6 +967,16 @@ begin
   AuthForm.Show;
 end;
 
+{****p* TMainUserForm/N10Clic
+* NAME
+* TMainUserForm.N10Clic
+* USAGE
+* Сменить пароль
+* SYNOPSIS
+*  TMainUserForm.N10Clic(Sender: TObject);
+* EXAMPLE
+*  N10Clic(self);
+ ****}
 procedure TMainUserForm.N10Click(Sender: TObject);
 begin
   if CoNSQL.UserName = '' then
@@ -771,6 +986,16 @@ begin
   ChangePassForm.ShowModal;
 end;
 
+{****p* TMainUserForm/NdocClick
+* NAME
+* TMainUserForm.NdocClick
+* USAGE
+* Выборка документов для поступления
+* SYNOPSIS
+*  TMainUserForm.NdocClick(Sender: TObject);
+* EXAMPLE
+*  NdocClick(self);
+ ****}
 procedure TMainUserForm.NdocClick(Sender: TObject);
 begin
 try
@@ -785,6 +1010,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/NspecClick
+* NAME
+* TMainUserForm.NspecClick
+* USAGE
+* Выборка специальностей для поступления
+* SYNOPSIS
+*  TMainUserForm.NspecClick(Sender: TObject);
+* EXAMPLE
+*  NspecClick(self);
+ ****}
 procedure TMainUserForm.NspecClick(Sender: TObject);
 begin
 try
@@ -808,6 +1043,16 @@ begin
   form4.ShowModal;
 end;
 
+{****p* TMainUserForm/N41Click
+* NAME
+* TMainUserForm.N41Click
+* USAGE
+* Удаление из БД
+* SYNOPSIS
+*  TMainUserForm.N41Click(Sender: TObject);
+* EXAMPLE
+*  N41Click(self);
+ ****}
 procedure TMainUserForm.N41Click(Sender: TObject);
 begin
 try
@@ -829,6 +1074,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/N22Click
+* NAME
+* TMainUserForm.N22Click
+* USAGE
+* Выборка статистики3
+* SYNOPSIS
+*  TMainUserForm.N22Click(Sender: TObject);
+* EXAMPLE
+*  N22Click(self);
+ ****}
 procedure TMainUserForm.N22Click(Sender: TObject);
 begin
 try
@@ -857,6 +1112,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/ComboBox1Change
+* NAME
+* TMainUserForm.ComboBox1Change
+* USAGE
+* Изменение стиля приложения
+* SYNOPSIS
+*  TMainUserForm.ComboBox1Change(Sender: TObject);
+* EXAMPLE
+*  ComboBox1Change(self);
+ ****}
 procedure TMainUserForm.ComboBox1Change(Sender: TObject);
 begin
 try
@@ -869,6 +1134,16 @@ except
 end;
 end;
 
+{****p* TMainUserForm/DBGrid1KeyDown
+* NAME
+* TMainUserForm.DBGrid1KeyDown
+* USAGE
+* Проверка ввода
+* SYNOPSIS
+*  TMainUserForm.DBGrid1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+* EXAMPLE
+*  DBGrid1KeyDown(self,44,ssShift);
+ ****}
 procedure TMainUserForm.DBGrid1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin

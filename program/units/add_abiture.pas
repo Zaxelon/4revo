@@ -6,6 +6,16 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls;
 
+{****t* Taddstudform/Taddstudform
+* NAME
+* Taddstudform
+* USAGE
+* Форма Taddstudform
+* SYNOPSIS
+*  Taddstudform = class(TForm)
+* EXAMPLE
+*  addstudform: Taddstudform;
+****}
 type
   Taddstudform = class(TForm)
     Button2: TButton;
@@ -62,31 +72,91 @@ implementation
 uses Add_obwee, pasport, ForMeMComp, doc_unit, pasp_rod, atestat, OGE,
   Priem, Lgot, MainUserUnit;
 
+{****p* Taddstudform/f_is_lgt
+* NAME
+* Taddstudform.f_is_lgt
+* USAGE
+* Установка приватной переменной is_benfit в false
+* SYNOPSIS
+*  Taddstudform.f_is_lgt;
+* EXAMPLE
+*  f_is_lgt;
+ ****}
 procedure Taddstudform.f_is_lgt;
 begin
   is_benfit:=false;
 end;
 
+{****p* Taddstudform/t_is_lgt
+* NAME
+* Taddstudform.t_is_lgt
+* USAGE
+* Установка приватной переменной is_benfit в true
+* SYNOPSIS
+*  Taddstudform.t_is_lgt;
+* EXAMPLE
+*  t_is_lgt;
+ ****}
 procedure Taddstudform.t_is_lgt;
 begin
   is_benfit:=true;
 end;
 
+{****p* Taddstudform/g_is_lgt
+* NAME
+* Taddstudform.g_is_lgt
+* USAGE
+* Извлечение приватной переменной is_benfit
+* SYNOPSIS
+*  Taddstudform.g_is_lgt: boolean;
+* EXAMPLE
+*  g_is_lgt;
+ ****}
 function Taddstudform.g_is_lgt: boolean;
 begin
   g_is_lgt:=is_benfit;
 end;
 
+{****p* Taddstudform/Button2Click
+* NAME
+* Taddstudform.Button2Click
+* USAGE
+* Отображение AddObweeForm
+* SYNOPSIS
+*  Taddstudform.Button2Click(Sender: TObject);
+* EXAMPLE
+*  Button2Click(self);
+ ****}
 procedure Taddstudform.Button2Click(Sender: TObject);
 begin
   AddObweeForm.Showmodal;
 end;
 
+{****p* Taddstudform/Button1Click
+* NAME
+* Taddstudform.Button1Click
+* USAGE
+* Закрыть Taddstudform
+* SYNOPSIS
+*  Taddstudform.Button1Click(Sender: TObject);
+* EXAMPLE
+*  Button1Click(self);
+ ****}
 procedure Taddstudform.Button1Click(Sender: TObject);
 begin
   close;
 end;
 
+{****p* Taddstudform/Button3Click
+* NAME
+* Taddstudform.Button3Click
+* USAGE
+* Добавление абитуриента
+* SYNOPSIS
+*  Taddstudform.Button3Click(Sender: TObject);
+* EXAMPLE
+*  Button3Click(self);
+ ****}
 procedure Taddstudform.Button3Click(Sender: TObject);
 begin
   if (label1.Caption='+') and (label2.Caption='+') and (label3.Caption='+')
@@ -138,16 +208,46 @@ begin
   end;
 end;
 
+{****p* Taddstudform/Button4Click
+* NAME
+* Taddstudform.Button4Click
+* USAGE
+* Отображение PasportForm
+* SYNOPSIS
+*  Taddstudform.Button4Click(Sender: TObject);
+* EXAMPLE
+*  Button4Click(self);
+ ****}
 procedure Taddstudform.Button4Click(Sender: TObject);
 begin
   PasportForm.ShowModal;
 end;
 
+{****p* Taddstudform/Button5Click
+* NAME
+* Taddstudform.Button5Click
+* USAGE
+* Отображение doc_form
+* SYNOPSIS
+*  Taddstudform.Button5Click(Sender: TObject);
+* EXAMPLE
+*  Button5Click(self);
+ ****}
 procedure Taddstudform.Button5Click(Sender: TObject);
 begin
   doc_form.ShowModal;
 end;
 
+{****p* Taddstudform/insert_obw
+* NAME
+* Taddstudform.insert_obw
+* USAGE
+* Добавление общих данных
+* SYNOPSIS
+*  Taddstudform.insert_obw;
+* EXAMPLE
+*  insert_obw;
+ ****}
 procedure Taddstudform.insert_obw;
 begin
 try
@@ -181,6 +281,16 @@ except
 end;
 end;
 
+{****p* Taddstudform/insert_pasp
+* NAME
+* Taddstudform.insert_pasp
+* USAGE
+* Добавление паспортных данных
+* SYNOPSIS
+*  Taddstudform.insert_pasp;
+* EXAMPLE
+*  insert_pasp;
+ ****}
 procedure Taddstudform.insert_pasp;
 begin
 try
@@ -208,6 +318,16 @@ except
 end;
 end;
 
+{****p* Taddstudform/insert_doc
+* NAME
+* Taddstudform.insert_doc
+* USAGE
+* Добавление сданных документов
+* SYNOPSIS
+*  Taddstudform.insert_doc;
+* EXAMPLE
+*  insert_doc;
+ ****}
 procedure Taddstudform.insert_doc;
 begin
 try
@@ -229,11 +349,31 @@ except
 end;
 end;
 
+{****p* Taddstudform/Button6Click
+* NAME
+* Taddstudform.Button6Click
+* USAGE
+* Отображение Pasp_rod_Form
+* SYNOPSIS
+*  Taddstudform.Button6Click(Sender: TObject);
+* EXAMPLE
+*  Button6Click(self);
+ ****}
 procedure Taddstudform.Button6Click(Sender: TObject);
 begin
   Pasp_rod_Form.ShowModal;
 end;
 
+{****p* Taddstudform/insert_pasp_rod
+* NAME
+* Taddstudform.insert_pasp_rod
+* USAGE
+* Добавление данных родителя
+* SYNOPSIS
+*  Taddstudform.insert_pasp_rod;
+* EXAMPLE
+*  insert_pasp_rod;
+ ****}
 procedure Taddstudform.insert_pasp_rod;
 begin
 try
@@ -263,11 +403,31 @@ except
 end;
 end;
 
+{****p* Taddstudform/Button8Click
+* NAME
+* Taddstudform.Button8Click
+* USAGE
+* Отображение Atest_form
+* SYNOPSIS
+*  Taddstudform.Button8Click(Sender: TObject);
+* EXAMPLE
+*  Button8Click(self);
+ ****}
 procedure Taddstudform.Button8Click(Sender: TObject);
 begin
   Atest_form.ShowModal;
 end;
 
+{****p* Taddstudform/insert_atest
+* NAME
+* Taddstudform.insert_atest
+* USAGE
+* Добавление данных аттестата
+* SYNOPSIS
+*  Taddstudform.insert_atest;
+* EXAMPLE
+*  insert_atest;
+ ****}
 procedure Taddstudform.insert_atest;
 var temp_s:string;
     zar:integer;
@@ -300,11 +460,31 @@ except
 end;
 end;
 
+{****p* Taddstudform/Button9Click
+* NAME
+* Taddstudform.Button9Click
+* USAGE
+* Отображение OGEG
+* SYNOPSIS
+*  Taddstudform.Button9Click(Sender: TObject);
+* EXAMPLE
+*  Button9Click(self);
+ ****}
 procedure Taddstudform.Button9Click(Sender: TObject);
 begin
   OGEG.ShowModal;
 end;
 
+{****p* Taddstudform/insert_oge
+* NAME
+* Taddstudform.insert_oge
+* USAGE
+* Добавление данных ОГЭ
+* SYNOPSIS
+*  Taddstudform.insert_oge;
+* EXAMPLE
+*  insert_oge;
+ ****}
 procedure Taddstudform.insert_oge;
 var temp_s:string;
     zar:integer;
@@ -334,11 +514,31 @@ except
 end;
 end;
 
+{****p* Taddstudform/Button7Click
+* NAME
+* Taddstudform.Button7Click
+* USAGE
+* Отображение Priem_form
+* SYNOPSIS
+*  Taddstudform.Button7Click(Sender: TObject);
+* EXAMPLE
+*  Button7Click(self);
+ ****}
 procedure Taddstudform.Button7Click(Sender: TObject);
 begin
   Priem_form.showmodal;
 end;
 
+{****p* Taddstudform/insert_priem
+* NAME
+* Taddstudform.insert_priem
+* USAGE
+* Добавление данных выбора специальностей
+* SYNOPSIS
+*  Taddstudform.insert_priem;
+* EXAMPLE
+*  insert_priem;
+ ****}
 procedure Taddstudform.insert_priem;
 begin
 try
@@ -383,6 +583,16 @@ except
 end;
 end;
 
+{****p* Taddstudform/insert_benfit
+* NAME
+* Taddstudform.insert_benfit
+* USAGE
+* Добавление данных о льготе
+* SYNOPSIS
+*  Taddstudform.insert_benfit;
+* EXAMPLE
+*  insert_benfit;
+ ****}
 procedure Taddstudform.insert_benfit;
 begin
 try
@@ -406,6 +616,16 @@ except
 end;
 end;
 
+{****p* Taddstudform/Button10Click
+* NAME
+* Taddstudform.Button10Click
+* USAGE
+* Отображение LgotForm
+* SYNOPSIS
+*  Taddstudform.Button10Click(Sender: TObject);
+* EXAMPLE
+*  Button10Click(self);
+ ****}
 procedure Taddstudform.Button10Click(Sender: TObject);
 begin
   LgotForm.ShowModal;

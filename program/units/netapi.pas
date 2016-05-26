@@ -46,6 +46,14 @@ const
  SV_TYPE_DOMAIN_ENUM     = $80000000;
  SV_TYPE_ALL             = $FFFFFFFF; //handy for NetServerEnum2
 
+{****t* Processing/NETAPI
+* NAME
+* NETAPI
+* USAGE
+* Модуль отвечающий за сканирование локальной сети
+* SYNOPSIS
+*  NETAPI = record ...
+****}
 type
  TServerInfo101 = record
    platform_id: DWORD;

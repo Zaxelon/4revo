@@ -1,7 +1,7 @@
 object CoNSQL: TCoNSQL
   OldCreateOrder = False
-  Left = 433
-  Top = 791
+  Left = 444
+  Top = 517
   Height = 220
   Width = 462
   object ADOConnection1: TADOConnection

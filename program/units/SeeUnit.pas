@@ -7,6 +7,16 @@ uses
   Dialogs, Grids, DBGrids, StdCtrls, Menus, Spin, printers, acDBGrid,
   sEdit, sSpinEdit;
 
+{****t* TSeeForm/TSeeForm
+* NAME
+* TSeeForm
+* USAGE
+* Форма TSeeForm
+* SYNOPSIS
+*  TSeeForm = class(TForm)
+* EXAMPLE
+*  SeeForm: TSeeForm;
+****}
 type
   TSeeForm = class(TForm)
     ComboBox1: TComboBox;
@@ -42,6 +52,16 @@ uses ForMeMComp, MainUserUnit;
 
 {$R *.dfm}
 
+{****p* TSeeForm/FormShow
+* NAME
+* TSeeForm.FormShow
+* USAGE
+* Обработка отображения TSeeForm
+* SYNOPSIS
+*  TSeeForm.FormShow(Sender: TObject);
+* EXAMPLE
+*  FormShow(self);
+ ****}
 procedure TSeeForm.FormShow(Sender: TObject);
 begin
   checkbox1.Checked:=false;
@@ -76,6 +96,16 @@ begin
   change_exec;
 end;
 
+{****p* TSeeForm/change_exec
+* NAME
+* TSeeForm.change_exec
+* USAGE
+* Обновление бдгрид
+* SYNOPSIS
+*  TSeeForm.change_exec;
+* EXAMPLE
+*  change_exec;
+ ****}
 procedure TSeeForm.change_exec;
 var prior:integer;
 begin
@@ -185,6 +215,16 @@ begin
   end;
 end;
 
+{****p* TSeeForm/FormCloseQuery
+* NAME
+* TSeeForm.FormCloseQuery
+* USAGE
+* Закрыть TSeeForm с откатом изменений
+* SYNOPSIS
+*  TSeeForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+* EXAMPLE
+*  FormCloseQuery(self,true);
+ ****}
 procedure TSeeForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   SeeForm.Label3.Visible:=false;
@@ -192,6 +232,16 @@ begin
   SeeForm.N1.Visible:=false;
 end;
 
+{****p* TSeeForm/Button1Click
+* NAME
+* TSeeForm.Button1Click
+* USAGE
+* Генерация отчета из бдгрид
+* SYNOPSIS
+*  TSeeForm.Button1Click(Sender: TObject);
+* EXAMPLE
+*  Button1Click(self);
+ ****}
 procedure TSeeForm.Button1Click(Sender: TObject);
 Begin
   if MainUserForm.show_your_atest = 3 then

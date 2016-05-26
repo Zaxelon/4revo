@@ -6,6 +6,16 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls;
 
+{****t* TForm4/TForm4
+* NAME
+* TForm4
+* USAGE
+* Форма TForm4
+* SYNOPSIS
+*  TForm4 = class(TForm)
+* EXAMPLE
+*  Form4: TForm4;
+****}
 type
   TForm4 = class(TForm)
     Label2: TLabel;
@@ -40,6 +50,16 @@ uses ForMeMComp,MainUserUnit;
 
 {$R *.dfm}
 
+{****p* TForm4/FormHide
+* NAME
+* TForm4.FormHide
+* USAGE
+* Скрытия TForm4
+* SYNOPSIS
+*  TForm4.FormHide(Sender: TObject; var CanClose: Boolean);
+* EXAMPLE
+*  FormHide(self,true);
+ ****}
 procedure TForm4.FormHide(Sender: TObject);
 begin
   form4.Label4.Visible:=false;
@@ -52,12 +72,32 @@ begin
   end;
 end;
 
+{****p* TForm4/FormCloseQuery
+* NAME
+* TForm4.FormCloseQuery
+* USAGE
+* Закрыть TForm4 с откатом изменений
+* SYNOPSIS
+*  TForm4.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+* EXAMPLE
+*  FormCloseQuery(self,true);
+ ****}
 procedure TForm4.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   form4.Label4.Visible:=false;
   form4.Edit2.Visible:=false;
 end;
 
+{****p* TForm4/Button1Click
+* NAME
+* TForm4.Button1Click
+* USAGE
+* Обработка добавления\изменения пользователей
+* SYNOPSIS
+*  TForm4.Button1Click(Sender: TObject);
+* EXAMPLE
+*  Button1Click(self);
+ ****}
 procedure TForm4.Button1Click(Sender: TObject);
 begin
 try
@@ -109,6 +149,16 @@ except
 end;
 end;
 
+{****p* TForm4/clearform
+* NAME
+* TForm4.clearform
+* USAGE
+* Очистка формы
+* SYNOPSIS
+*  TForm4.clearform;
+* EXAMPLE
+*  clearform;
+ ****}
 procedure TForm4.clearform;
 begin
   edit1.Text:='';
@@ -116,21 +166,61 @@ begin
   edit3.Text:='';
 end;
 
+{****p* TForm4/ComboBox1KeyPress
+* NAME
+* TForm4.ComboBox1KeyPress
+* USAGE
+* Запрет изменения данного
+* SYNOPSIS
+*  TForm4.ComboBox1KeyPress(Sender: TObject; var Key: Char);
+* EXAMPLE
+*  ComboBox1KeyPress(self,#39);
+ ****}
 procedure TForm4.ComboBox1KeyPress(Sender: TObject; var Key: Char);
 begin
   Key:=#0;
 end;
 
+{****p* TForm4/Edit1KeyPress
+* NAME
+* TForm4.Edit1KeyPress
+* USAGE
+* Проверка ввода
+* SYNOPSIS
+*  TForm4.Edit1KeyPress(Sender: TObject; var Key: Char);
+* EXAMPLE
+*  Edit1KeyPress(self,#39);
+ ****}
 procedure TForm4.Edit1KeyPress(Sender: TObject; var Key: Char);
 begin
   if not (Key in ['a'..'z', 'A'..'Z', 'а'..'я', 'А'..'Я']) then Key := #0;
 end;
 
+{****p* TForm4/Edit3KeyPress
+* NAME
+* TForm4.Edit3KeyPress
+* USAGE
+* Проверка ввода
+* SYNOPSIS
+*  TForm4.Edit3KeyPress(Sender: TObject; var Key: Char);
+* EXAMPLE
+*  Edit3KeyPress(self,#39);
+ ****}
 procedure TForm4.Edit3KeyPress(Sender: TObject; var Key: Char);
 begin
   if (Key =' ')  then Key := #0;
 end;
 
+{****p* TForm4/FormShow
+* NAME
+* TForm4.FormShow
+* USAGE
+* Обработка отображения TForm4
+* SYNOPSIS
+*  TForm4.FormShow(Sender: TObject);
+* EXAMPLE
+*  FormShow(self);
+ ****}
 procedure TForm4.FormShow(Sender: TObject);
 begin
   Edit1.Text:='';

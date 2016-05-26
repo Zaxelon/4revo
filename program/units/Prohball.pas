@@ -6,6 +6,16 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Spin, sEdit, sSpinEdit;
 
+{****t* TProhForm/TProhForm
+* NAME
+* TProhForm
+* USAGE
+* Форма TProhForm
+* SYNOPSIS
+*  TProhForm = class(TForm)
+* EXAMPLE
+*  ProhForm: TProhForm;
+****}
 type
   TProhForm = class(TForm)
     ComboBox1: TComboBox;
@@ -35,6 +45,16 @@ uses ForMeMComp;
 
 {$R *.dfm}
 
+{****p* TProhForm/FormShow
+* NAME
+* TProhForm.FormShow
+* USAGE
+* Обработка отображения TProhForm
+* SYNOPSIS
+*  TProhForm.FormShow(Sender: TObject);
+* EXAMPLE
+*  FormShow(self);
+ ****}
 procedure TProhForm.FormShow(Sender: TObject);
 begin
   checkbox1.Checked:=false;
@@ -54,6 +74,16 @@ begin
   end;
 end;
 
+{****p* TProhForm/Button1Click
+* NAME
+* TProhForm.Button1Click
+* USAGE
+* Расчет среднего балла
+* SYNOPSIS
+*  TProhForm.Button1Click(Sender: TObject);
+* EXAMPLE
+*  Button1Click(self);
+ ****}
 procedure TProhForm.Button1Click(Sender: TObject);
 var prior:integer;
 begin
@@ -73,6 +103,16 @@ begin
     end;
 end;
 
+{****p* TProhForm/ComboBox1Change
+* NAME
+* TProhForm.ComboBox1Change
+* USAGE
+* Изменение в комбобокс1
+* SYNOPSIS
+*  TProhForm.ComboBox1Change(Sender: TObject);
+* EXAMPLE
+*  ComboBox1Change(self);
+ ****}
 procedure TProhForm.ComboBox1Change(Sender: TObject);
 begin
   CoNSQL.TempQuery.SQL.Text:='select TOP 1 places from specialty WHERE name_spec = :1';

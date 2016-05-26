@@ -6,6 +6,16 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, Buttons, inifiles;
 
+{****t* TAuthForm/TAuthForm
+* NAME
+* TAuthForm
+* USAGE
+* Форма TAuthForm
+* SYNOPSIS
+*  TAuthForm = class(TForm)
+* EXAMPLE
+*  AuthForm: TAuthForm;
+****}
 type
   TAuthForm = class(TForm)
     Label1: TLabel;
@@ -38,11 +48,31 @@ implementation
 uses ForMeMComp, MainUserUnit, ADODB, Netapi, atestat;
 {$R *.dfm}
 
+{****p* TAuthForm/FormCloseQuery
+* NAME
+* TAuthForm.FormCloseQuery
+* USAGE
+* Обработка закрытия формы
+* SYNOPSIS
+*  TAuthForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+* EXAMPLE
+*  FormCloseQuery(self,true);
+ ****}
 procedure TAuthForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   application.Terminate;
 end;
 
+{****p* TAuthForm/Button1Click
+* NAME
+* TAuthForm.Button1Click
+* USAGE
+* Обработка нажатия на кнопку
+* SYNOPSIS
+*  TAuthForm.Button1Click(Sender: TObject);
+* EXAMPLE
+*  TAuthForm.Button1Click(self);
+ ****}
 procedure TAuthForm.Button1Click(Sender: TObject);
 var tmp:integer;
 begin
@@ -114,12 +144,32 @@ Label3.Caption:='';
     end;
 end;
 
+{****p* TAuthForm/Edit1KeyDown
+* NAME
+* TAuthForm.Edit1KeyDown
+* USAGE
+* Обработка нажатия на клавишу
+* SYNOPSIS
+*  TAuthForm.Edit1KeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+* EXAMPLE
+*  TAuthForm.Edit1KeyDown(self,13,stShift);
+ ****}
 procedure TAuthForm.Edit1KeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   if key = 13 then AuthForm.Button1Click(self);
 end;
 
+{****p* TAuthForm/TAuthForm.FormCreate
+* NAME
+* TAuthForm.FormCreate
+* USAGE
+* Обработка создания формы
+* SYNOPSIS
+*  TAuthForm.FormCreate(Sender: TObject);
+* EXAMPLE
+*  TAuthForm.FormCreate(Self);
+ ****}
 procedure TAuthForm.FormCreate(Sender: TObject);
 var deathwing:cardinal;
 Begin
@@ -129,6 +179,16 @@ Begin
   combobox1.ItemIndex:=0;
 end;
 
+{****p* TAuthForm/FormShow
+* NAME
+* TAuthForm.FormShow
+* USAGE
+* Обработка отрисовки формы
+* SYNOPSIS
+*  TAuthForm.FormShow(Sender: TObject);
+* EXAMPLE
+*  TAuthForm.FormShow(Self);
+ ****}
 procedure TAuthForm.FormShow(Sender: TObject);
 var tmp:integer;
 begin
@@ -140,11 +200,31 @@ begin
   CoNSQL.SkinIsRough.SkinName:=MainUserForm.ComBobox1.Items[MainUserForm.ComBobox1.ItemIndex];
 end;
 
+{****p* TAuthForm/SpeedButton1Click
+* NAME
+* TAuthForm.SpeedButton1Click
+* USAGE
+* Обработка нажатия на кнопку
+* SYNOPSIS
+*  TAuthForm.SpeedButton1Click(Sender: TObject);
+* EXAMPLE
+*  TAuthForm.SpeedButton1Click(Self);
+ ****}
 procedure TAuthForm.SpeedButton1Click(Sender: TObject);
 begin
   IniFile.WriteString('DataBase','IPDef',Combobox1.Text);
 end;
 
+{****p* TAuthForm/ComboBox1Exit
+* NAME
+* TAuthForm.ComboBox1Exit
+* USAGE
+* Обработка изменения комбобокса
+* SYNOPSIS
+*  TAuthForm.ComboBox1Exit(Sender: TObject);
+* EXAMPLE
+*  TAuthForm.ComboBox1Exit(Self);
+ ****}
 procedure TAuthForm.ComboBox1Exit(Sender: TObject);
 begin
   Combobox1.TabStop:=false;

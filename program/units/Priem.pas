@@ -6,6 +6,16 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls;
 
+{****t* TPriem_form/TPriem_form
+* NAME
+* TPriem_form
+* USAGE
+* Форма TPriem_form
+* SYNOPSIS
+*  TPriem_form = class(TForm)
+* EXAMPLE
+*  Priem_form: TPriem_form;
+****}
 type
   TPriem_form = class(TForm)
     ComboBox1: TComboBox;
@@ -34,6 +44,16 @@ uses add_abiture, ForMeMComp;
 
 {$R *.dfm}
 
+{****p* TPriem_form/Button2Click
+* NAME
+* TPriem_form.Button2Click
+* USAGE
+* Закрыть TPriem_form с сохранением
+* SYNOPSIS
+*  TPriem_form.Button2Click(Sender: TObject);
+* EXAMPLE
+*  Button2Click(self);
+ ****}
 procedure TPriem_form.Button2Click(Sender: TObject);
 begin
   if ((ComboBox1.Items[ComboBox1.itemindex]<>'')and (ComboBox2.Items[ComboBox1.itemindex]<>'')and
@@ -48,6 +68,16 @@ begin
   end;
 end;
 
+{****p* TPriem_form/FormCloseQuery
+* NAME
+* TPriem_form.FormCloseQuery
+* USAGE
+* Закрыть TPriem_form с проверкой
+* SYNOPSIS
+*  TPriem_form.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+* EXAMPLE
+*  FormCloseQuery(self,true);
+ ****}
 procedure TPriem_form.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
