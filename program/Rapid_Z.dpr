@@ -1,5 +1,5 @@
 program Rapid_Z;
-
+//Автор Орищенко Андрей П-304.
 uses
   Forms,
   AuthUnit in 'Units\AuthUnit.pas' {AuthForm},

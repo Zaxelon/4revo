@@ -1,17 +1,14 @@
+SET NOCOUNT ON;
+IF OBJECT_ID('priemka', N'U') IS NOT NULL DROP DATABASE [priemka];
 GO
-CREATE DATABASE priemka
+IF OBJECT_ID('priemka', N'U') IS NULL 
+BEGIN
+CREATE DATABASE [priemka]
 ON 
-( NAME = priemka,
-FILENAME = 'C:\priemka.mdf',
-SIZE = 10,
-MAXSIZE = 100,
-FILEGROWTH = 5)
+( NAME = priemka,FILENAME = 'C:\priemka.mdf',SIZE = 10,MAXSIZE = 100,FILEGROWTH = 5)
 LOG ON 
-(NAME = priemka_log,
-FILENAME = 'C:\priemka_log.ldf',
-SIZE = 5,
-MAXSIZE = 50,
-FILEGROWTH = 5);
+(NAME = priemka_log,FILENAME = 'C:\priemka_log.ldf',SIZE = 5,MAXSIZE = 50,FILEGROWTH = 5);
+END
 GO
 USE priemka
 GO
@@ -281,7 +278,6 @@ ORDER BY dbo.atestat.avgn DESC
 end
 OPEN zlp
 FETCH FIRST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn, @docnb
-
 WHILE @@FETCH_STATUS = 0
 BEGIN
 	DECLARE @iluwka decimal(4,2)
@@ -331,7 +327,6 @@ OPEN zlp
 FETCH LAST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
 if @cntzt>@count SET @not_avg = @avgn else SET @not_avg = 0
 FETCH FIRST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
-
 WHILE @@FETCH_STATUS = 0
 BEGIN
 	if not(@avgn = @not_avg)
@@ -346,7 +341,6 @@ BEGIN
 		DECLARE @pub decimal(4,2)
 		if @avgn>10 SET @pub = @avgn - 10.00
 		else SET @pub = @avgn
-		--SELECT @id_s, @sr_nm, @fr_nm, @md_nm, @pub
 		INSERT INTO @zapas(ID,sr_nm,fr_nm,md_nm,avgn)
 		VALUES (@id_s, @sr_nm, @fr_nm, @md_nm, @pub)	
 	end
@@ -354,7 +348,6 @@ BEGIN
 END
 CLOSE zlp
 DEALLOCATE zlp
---SELECT @count AS VHCOLV,COUNT(*) FROM @zpr1 AS BANDJ
 DECLARE @real_count INT
 SET @real_count = (SELECT COUNT(*) FROM @zpr1)  
 IF @count > @real_count
@@ -390,9 +383,7 @@ Begin
 		SET @old_s = @avgn
 		FETCH NEXT FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
 	END
-	
 	FETCH FIRST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
-	
 	WHILE @@FETCH_STATUS = 0 and @count > @real_count
 	BEGIN
 		SET @zip =(SELECT training_courses FROM dbo.abiture
@@ -412,10 +403,8 @@ Begin
 CLOSE zlp
 DEALLOCATE zlp	
 END
-
 SELECT ID as [id_statement],sr_nm as surname,fr_nm as first_name,md_nm as middle_name,avgn FROM @zpr1
 END
-
 GO
 CREATE PROCEDURE [dbo].[proh_ball]
 @name_spec varchar(100),
@@ -540,7 +529,6 @@ OPEN zlp
 FETCH LAST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
 if @cntzt>@count SET @not_avg = @avgn else SET @not_avg = 0
 FETCH FIRST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
-
 WHILE @@FETCH_STATUS = 0
 BEGIN
 	if not(@avgn = @not_avg)
@@ -606,7 +594,6 @@ ORDER BY dbo.atestat.avgn DESC
 end
 OPEN zlp
 FETCH FIRST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn, @docnb
-
 WHILE @@FETCH_STATUS = 0
 BEGIN
 	DECLARE @iluwka decimal(4,2)
@@ -619,7 +606,6 @@ BEGIN
 END
 CLOSE zlp
 DEALLOCATE zlp
-
 if ((SELECT COUNT(*) FROM @zpr)>@count) and (@count <> 0)
 BEGIN
 	DECLARE zlp SCROLL CURSOR FOR
@@ -746,7 +732,6 @@ ORDER BY dbo.atestat.avgn DESC
 end
 OPEN zlp
 FETCH FIRST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn, @docnb
-
 WHILE @@FETCH_STATUS = 0
 BEGIN
 	DECLARE @iluwka decimal(4,2)
@@ -796,7 +781,6 @@ OPEN zlp
 FETCH LAST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
 if @cntzt>@count SET @not_avg = @avgn else SET @not_avg = 0
 FETCH FIRST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
-
 WHILE @@FETCH_STATUS = 0
 BEGIN
 	if not(@avgn = @not_avg)
@@ -811,7 +795,6 @@ BEGIN
 		DECLARE @pub decimal(4,2)
 		if @avgn>10 SET @pub = @avgn - 10.00
 		else SET @pub = @avgn
-		--SELECT @id_s, @sr_nm, @fr_nm, @md_nm, @pub
 		INSERT INTO @zapas(ID,sr_nm,fr_nm,md_nm,avgn)
 		VALUES (@id_s, @sr_nm, @fr_nm, @md_nm, @pub)	
 	end
@@ -819,7 +802,6 @@ BEGIN
 END
 CLOSE zlp
 DEALLOCATE zlp
---SELECT @count AS VHCOLV,COUNT(*) FROM @zpr1 AS BANDJ
 DECLARE @real_count INT
 SET @real_count = (SELECT COUNT(*) FROM @zpr1)  
 IF @count > @real_count
@@ -832,7 +814,6 @@ Begin
 	DECLARE @old_s INT 
 	SET @old_s = 0
 	FETCH FIRST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
-	
 	WHILE @@FETCH_STATUS = 0 and @count > @real_count
 	BEGIN
 		DECLARE @zip bit
@@ -855,9 +836,7 @@ Begin
 		SET @old_s = @avgn
 		FETCH NEXT FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
 	END
-	
 	FETCH FIRST FROM zlp INTO @id_s, @sr_nm, @fr_nm, @md_nm, @avgn
-	
 	WHILE @@FETCH_STATUS = 0 and @count > @real_count
 	BEGIN
 		SET @zip =(SELECT training_courses FROM dbo.abiture
@@ -877,10 +856,8 @@ Begin
 CLOSE zlp
 DEALLOCATE zlp	
 END
-
 DECLARE @pzkwd bit
 if @prior = 1 SET @pzkwd = 1 else SET @pzkwd = 0
-
 DECLARE @bgl INT
 if @count<=(SELECT COUNT(*)
 FROM dbo.specialty 
@@ -894,7 +871,6 @@ INNER JOIN dbo.priem ON dbo.specialty.id_spec = dbo.priem.id_spec
 INNER JOIN dbo.abiture ON dbo.priem.id_statement = dbo.abiture.id_statement
 WHERE (dbo.specialty.name_spec = @name_spec and ((@pzkwd = 0)
 or (@pzkwd = 1 and not(dbo.priem.priority in (2,3)))))) - @count else SET @bgl = 0
-
 DECLARE @PHP Table
 (zz varchar(20))
 INSERT @PHP
@@ -986,355 +962,179 @@ USE [priemka]
 GO
 CREATE ROLE [Secretar]
 GO
-use [priemka]
-GO
 GRANT INSERT ON [dbo].[benefits] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT SELECT ON [dbo].[benefits] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT ALTER ON [dbo].[benefits] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT DELETE ON [dbo].[benefits] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT EXECUTE ON [dbo].[prowedwie] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT EXECUTE ON [dbo].[proh_ball] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT EXECUTE ON [dbo].[add_priem] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT INSERT ON [dbo].[pasport] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT SELECT ON [dbo].[pasport] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT ALTER ON [dbo].[pasport] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT DELETE ON [dbo].[pasport] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT INSERT ON [dbo].[oge] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT SELECT ON [dbo].[oge] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT ALTER ON [dbo].[oge] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT DELETE ON [dbo].[oge] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT EXECUTE ON [dbo].[sel_title] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT EXECUTE ON [dbo].[priem_doz] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT EXECUTE ON [dbo].[sel_count_kurs] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT EXECUTE ON [dbo].[sel_avg_atest] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT INSERT ON [dbo].[pasp_rod] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT SELECT ON [dbo].[pasp_rod] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT ALTER ON [dbo].[pasp_rod] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT DELETE ON [dbo].[pasp_rod] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT INSERT ON [dbo].[document] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT SELECT ON [dbo].[document] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT ALTER ON [dbo].[document] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT DELETE ON [dbo].[document] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT EXECUTE ON [dbo].[add_doc] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT INSERT ON [dbo].[documents] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT SELECT ON [dbo].[documents] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT ALTER ON [dbo].[documents] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT DELETE ON [dbo].[documents] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT EXECUTE ON [dbo].[doomsayer] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT EXECUTE ON [dbo].[see_all_table] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT INSERT ON [dbo].[abiture] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT SELECT ON [dbo].[abiture] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT ALTER ON [dbo].[abiture] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT DELETE ON [dbo].[abiture] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT EXECUTE ON [dbo].[ne_prowedwie] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT EXECUTE ON [dbo].[gen_count_prow] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT EXECUTE ON [dbo].[gen_all_prow] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT INSERT ON [dbo].[abit_prow] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT SELECT ON [dbo].[abit_prow] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT ALTER ON [dbo].[abit_prow] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT DELETE ON [dbo].[abit_prow] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT INSERT ON [dbo].[atestat] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT SELECT ON [dbo].[atestat] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT ALTER ON [dbo].[atestat] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT DELETE ON [dbo].[atestat] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT EXECUTE ON [dbo].[polu_proh] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT INSERT ON [dbo].[specialty] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT SELECT ON [dbo].[specialty] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT ALTER ON [dbo].[specialty] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT DELETE ON [dbo].[specialty] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT INSERT ON [dbo].[priem] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT SELECT ON [dbo].[priem] TO [Secretar]
 GO
-use [priemka]
-GO
 GRANT ALTER ON [dbo].[priem] TO [Secretar]
-GO
-use [priemka]
 GO
 GRANT DELETE ON [dbo].[priem] TO [Secretar]
 GO
-USE [priemka]
-GO
 CREATE ROLE [Star_Secretar]
-GO
-use [priemka]
 GO
 GRANT INSERT ON [dbo].[abit_prow] TO [Star_Secretar]
 GO
-use [priemka]
-GO
 GRANT SELECT ON [dbo].[abit_prow] TO [Star_Secretar]
-GO
-use [priemka]
 GO
 GRANT ALTER ON [dbo].[abit_prow] TO [Star_Secretar]
 GO
-use [priemka]
-GO
 GRANT DELETE ON [dbo].[abit_prow] TO [Star_Secretar]
-GO
-use [priemka]
 GO
 GRANT INSERT ON [dbo].[document] TO [Star_Secretar]
 GO
-use [priemka]
-GO
 GRANT SELECT ON [dbo].[document] TO [Star_Secretar]
-GO
-use [priemka]
 GO
 GRANT DELETE ON [dbo].[document] TO [Star_Secretar]
 GO
-use [priemka]
-GO
 GRANT UPDATE ON [dbo].[specialty] TO [Star_Secretar]
-GO
-use [priemka]
 GO
 GRANT VIEW DEFINITION ON [dbo].[specialty] TO [Star_Secretar]
 GO
-use [priemka]
-GO
 GRANT DELETE ON [dbo].[specialty] TO [Star_Secretar]
-GO
-USE [priemka]
-GO
-use [priemka]
 GO
 GRANT INSERT ON [dbo].[specialty] TO [Star_Secretar]
 GO
-use [priemka]
-GO
 GRANT SELECT ON [dbo].[specialty] TO [Star_Secretar]
-GO
-use [priemka]
 GO
 GRANT ALTER ON [dbo].[specialty] TO [Star_Secretar]
 GO
-use [priemka]
-GO
 GRANT UPDATE ON [dbo].[abit_prow] TO [Star_Secretar]
-GO
-use [priemka]
 GO
 GRANT ALTER ON [dbo].[document] TO [Star_Secretar]
 GO
-use [priemka]
-GO
 GRANT UPDATE ON [dbo].[document] TO [Star_Secretar]
-GO
-use [priemka]
 GO
 CREATE ROLE [Admun]
 GO
-use [priemka]
-GO
 GRANT INSERT TO [Admun]
-GO
-use [priemka]
 GO
 GRANT SELECT TO [Admun]
 GO
-use [priemka]
-GO
 GRANT EXECUTE TO [Admun]
-GO
-use [priemka]
 GO
 GRANT ALTER TO [Admun]
 GO
-use [priemka]
-GO
 GRANT UPDATE TO [Admun]
-GO
-use [priemka]
 GO
 GRANT DELETE TO [Admun]
 GO
-use [priemka]
-GO
 GRANT CONTROL TO [Admun]
 GO
-use [priemka]
-GO
 GRANT ALTER ANY DATABASE AUDIT TO [Admun]
-GO
-use [priemka]
 GO
 GRANT ALTER ANY USER TO [Admun]
 GO
 CREATE LOGIN [secr_user] WITH PASSWORD=N'bubl11', DEFAULT_DATABASE=[priemka], CHECK_EXPIRATION=OFF, CHECK_POLICY=ON
 GO
-USE [priemka]
-GO
 CREATE USER [secr_user] FOR LOGIN [secr_user]
-GO
-USE [priemka]
 GO
 EXEC sp_addrolemember N'Secretar', N'secr_user'
 GO
@@ -1346,8 +1146,6 @@ USE [priemka]
 GO
 CREATE USER [star_user] FOR LOGIN [star_user]
 GO
-USE [priemka]
-GO
 EXEC sp_addrolemember N'Star_Secretar', N'star_user'
 GO
 USE [master]
@@ -1358,11 +1156,8 @@ USE [priemka]
 GO
 CREATE USER [admn_user] FOR LOGIN [admn_user]
 GO
-USE [priemka]
-GO
 EXEC sp_addrolemember N'Admun', N'admn_user'
 EXEC master..sp_addsrvrolemember @loginame = N'admn_user', @rolename = N'securityadmin'
-
 GO
 INSERT INTO abiture(surname,first_name,middle_name,is_male,birthday,phone,address,training_courses,date_of_application) VALUES
 ('Субботин','Юрий','Степанович','true','09.02.1996',79292406219,'г.Москва, пер.Никитников, д.3 кв.14','true','22.03.2016'),
